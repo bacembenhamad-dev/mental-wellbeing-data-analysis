@@ -1,0 +1,360 @@
+---
+title: "Analyse des Comportements et des Facteurs liés au BIEN-ÊTRE MENTAL"
+author: "Bacem Ben Ahmad"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      fig.width = 7, fig.height = 5)
+```
+
+# Introduction :
+
+Ce projet a pour but d'étudier les différents facteurs liés au **bien-être mental** chez les étudiants et les salariés, en analysant les niveaux de stress, d'anxiété, de sommeil, de burnout et de soutien social.
+
+# Le questionnaire :
+
+1. **La période d'enquête** : Avril 2026
+2. **L'enquête** : L'enquête a été créée par Google Forms et distribuée aux répondeurs à travers Facebook et LinkedIn. Les données ont été ensuite collectées dans un fichier CSV et traitées par la suite par le langage R.
+3. **Base de données** : La base de données obtenue est une base de **86 lignes et 176 colonnes** (questionnaire trilingue : Anglais / Français / Tounsi). Après fusion des trois blocs de langue, on obtient un tableau unifié de **86 individus et 45 variables** (6 démographiques + 30 items Likert + 10 questions Oui/Non).
+
+# Importation des données :
+
+```{r}
+library(dplyr)
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(ggplot2)
+
+WB <- read.csv("Mental well-being (réponses) - Réponses au formulaire 1.csv",
+               header = TRUE, stringsAsFactors = FALSE,
+               check.names = FALSE, encoding = "UTF-8",
+               na.strings = c("", " ", "NA"))
+```
+
+La base de données **MENTAL WELL-BEING** est construite à partir d'un questionnaire destiné à des individus de différentes catégories socio-professionnelles (étudiants et salariés) et plusieurs classes d'âge.
+
+Les données contiennent principalement **30 items d'auto-évaluation sur une échelle de Likert (1 = pas du tout d'accord, 5 = tout à fait d'accord)** couvrant le stress, l'anxiété, le sommeil, le burnout, la motivation, le soutien social et la résilience, ainsi que **10 questions Oui/Non** portant sur les habitudes de santé (sport, méditation, consultation, etc.).
+
+## Fusion des trois blocs de langue :
+
+Chaque répondant a rempli un seul bloc (Anglais, Français ou Tounsi). On fusionne les trois blocs en variables uniques via un `coalesce`.
+
+```{r}
+coalesce_cols <- function(...) {
+  cols <- list(...); out <- cols[[1]]
+  for (k in 2:length(cols)) out <- ifelse(is.na(out) | out == "", cols[[k]], out)
+  out
+}
+
+# 30 items Likert : EN cols 21-50, FR cols 79-108, TN cols 137-166
+L_en <- sapply(WB[, 21:50], as.numeric)
+L_fr <- sapply(WB[, 79:108], as.numeric)
+L_tn <- sapply(WB[, 137:166], as.numeric)
+Likert <- as.data.frame(matrix(NA_real_, nrow = nrow(WB), ncol = 30))
+for (j in 1:30) {
+  Likert[, j] <- ifelse(!is.na(L_en[, j]), L_en[, j],
+                 ifelse(!is.na(L_fr[, j]), L_fr[, j], L_tn[, j]))
+}
+colnames(Likert) <- c(
+  "overwhelmed","worry","tired_sleep","deadlines_tens","neg_thoughts",
+  "insomnia","goal_pressure","nervous","sleep_interr","work_conflicts",
+  "concentration","drowsy","cant_disconnect","avoid_fear","substances",
+  "emot_exhaust","manage_emot","collegue_supp","lost_meaning","optimistic",
+  "talk_superv","cynical","bounce_back","isolated","motiv_drop",
+  "self_care","wb_resources","chron_fatigue","wlb","ask_help"
+)
+
+# Démographiques fusionnées
+age <- recode(coalesce_cols(WB[[3]], WB[[61]], WB[[119]]),
+  "18-24 years"="18-24","18-24 ans"="18-24","18-24 sna"="18-24",
+  "25-34 years"="25-34","25-34 ans"="25-34","25-34 sna"="25-34",
+  "35-44 years"="35-44","35-44 ans"="35-44","35-44 sna"="35-44",
+  "45-54 years"="45-54","45-54 ans"="45-54","45-54 sna"="45-54",
+  "55 years or older"="55+","55 ans ou plus"="55+","55 sna walla akther"="55+",
+  .default = NA_character_)
+genre <- recode(coalesce_cols(WB[[4]], WB[[62]], WB[[120]]),
+  "Male"="Homme","Homme"="Homme","Rajel"="Homme",
+  "Female"="Femme","Femme"="Femme","Mra"="Femme", .default = NA_character_)
+situation <- recode(coalesce_cols(WB[[5]], WB[[63]], WB[[121]]),
+  "Single"="Celibataire","Célibataire"="Celibataire","A3zeb / 3azba"="Celibataire",
+  "In a relationship"="En_couple","En couple"="En_couple","Fi 3ala9a"="En_couple",
+  "Married"="Marie","Marié(e)"="Marie","Mzawej/Mzawja"="Marie",
+  "Divorced"="Divorce","Divorcé(e)"="Divorce","Mtala9/Mtal9a"="Divorce",
+  "Widowed"="Veuf","Veuf / Veuve"="Veuf","Armel / Armla"="Veuf",
+  .default = NA_character_)
+statut <- recode(coalesce_cols(WB[[6]], WB[[64]], WB[[122]]),
+  "Student"="Etudiant","Étudiant(e)"="Etudiant","Taleb/Talba"="Etudiant",
+  "Worker"="Salarie","Salarié(e)"="Salarie","5eddem/5eddema"="Salarie",
+  .default = NA_character_)
+filiere <- recode(coalesce_cols(WB[[8]], WB[[66]], WB[[124]]),
+  "Science & Technology"="Sciences","Sciences & Technologies"="Sciences",
+  "Economics, Business & Management"="Eco","Économie, Gestion & Commerce"="Eco",
+  "Health & Medicine"="Sante","Santé & Médecine"="Sante",
+  "Law & Political Science"="Droit","Droit & Sciences politiques"="Droit",
+  "Humanities & Social Sciences"="Humanites",
+  "Arts & Literature"="Arts","Arts & Lettres"="Arts",
+  "Other"="Autre","Autre"="Autre","A5er"="Autre", .default = "Autre")
+
+# 10 Oui/Non
+YN_en <- WB[, 51:60]; YN_fr <- WB[, 109:118]; YN_tn <- WB[, 167:176]
+YN <- as.data.frame(matrix(NA_character_, nrow = nrow(WB), ncol = 10))
+for (j in 1:10) {
+  v <- coalesce_cols(YN_en[[j]], YN_fr[[j]], YN_tn[[j]])
+  YN[, j] <- recode(v, "Yes"="Oui","Oui"="Oui","Ey"="Oui",
+                       "No"="Non","Non"="Non","Le"="Non", .default = NA_character_)
+}
+colnames(YN) <- c("consult_pro","sport","quitter","app_num","prog_aide",
+                  "arret_maladie","relax","alim_saine","hobby","interet_plat")
+
+MWB <- cbind(Likert, YN,
+             data.frame(age=age, genre=genre, situation=situation,
+                        statut=statut, filiere=filiere, stringsAsFactors=FALSE))
+```
+
+# Statistiques descriptives :
+
+## 1. Répartition selon le sexe :
+
+```{r}
+freq1 <- table(MWB$genre)
+pct1 <- round(freq1/sum(freq1)*100)
+lbls1 <- paste(names(freq1), pct1, "%", sep=" ")
+pie(freq1, labels = lbls1, col=c("#d8e2dc","#fae1dd"),
+    main="Répartition selon le Sexe")
+```
+
+## 2. Répartition selon l'âge :
+
+```{r}
+freq2 <- table(MWB$age)
+pct2 <- round(freq2/sum(freq2)*100)
+lbls2 <- paste(names(freq2), pct2, "%", sep=" ")
+colors <- c("#555b6e","#89b0ae","#bee3db","#ffd6ba","#fae1dd","#f0c33c")
+pie(freq2, labels = lbls2, col=colors, main="Répartition selon l'Âge")
+```
+
+## 3. Répartition selon le statut :
+
+```{r}
+freq3 <- table(MWB$statut)
+pct3 <- round(freq3/sum(freq3)*100)
+lbls3 <- paste(names(freq3), pct3, "%", sep=" ")
+pie(freq3, labels = lbls3, col=c("#89b0ae","#ffd6ba"),
+    main="Répartition selon le Statut (Étudiant / Salarié)")
+```
+
+## 4. Répartition selon la filière :
+
+```{r}
+freq4 <- table(MWB$filiere)
+pct4 <- round(freq4/sum(freq4)*100)
+lbls4 <- paste(names(freq4), pct4, "%", sep=" ")
+pie(freq4, labels = lbls4, col=colors,
+    main="Répartition selon la Filière d'études")
+```
+
+## 5. Pratique du sport régulier :
+
+```{r}
+b <- barplot(table(MWB$sport), col="#69b3a2", ylim=c(0, 60),
+             main="Pratique régulière d'une activité physique (≥ 2 fois/semaine)")
+text(b[, 1], table(MWB$sport) - 2, table(MWB$sport))
+```
+
+## 6. Consultation d'un professionnel de santé mentale :
+
+```{r}
+b <- barplot(table(MWB$consult_pro), col="#c44e52", ylim=c(0, 60),
+             main="Avez-vous déjà consulté un professionnel de santé mentale ?")
+text(b[, 1], table(MWB$consult_pro) - 2, table(MWB$consult_pro))
+```
+
+# Analyse en Composantes Principales :
+
+## 1. But de l'ACP :
+
+L'ACP a pour but d'étudier les différentes dimensions latentes du bien-être mental à partir des **30 items Likert** du questionnaire, et de regrouper les items selon leur proximité afin d'identifier les grandes composantes (stress, sommeil, burnout, résilience, etc.).
+
+```{r}
+keep <- complete.cases(Likert)
+X <- as.matrix(Likert[keep, ])
+res.pca1 <- PCA(X, graph = FALSE, scale.unit = TRUE, ncp = 10)
+```
+
+## 2. Les axes à conserver :
+
+On commence par le **critère du taux d'inertie cumulé** et de **Kaiser** :
+
+```{r}
+eig.val1 <- get_eigenvalue(res.pca1)
+eig.val1
+```
+
+```{r fig.width=8, fig.height=5}
+fviz_eig(res.pca1, addlabels = TRUE, ylim = c(0, 40),
+         main = "Scree plot — Éboulis des valeurs propres")
+```
+
+```{r fig.width=7, fig.height=8}
+var1 <- get_pca_var(res.pca1)
+corrplot(var1$cos2, is.corr = FALSE)
+```
+
+Plus le `cos²` est élevé, mieux la variable est représentée sur l'axe considéré.
+
+**Critères de sélection des axes :**
+
+- **Critère de Kaiser** : on retient les axes dont la valeur propre est supérieure à 1 (ACP normée → I_T = p = 30).
+- **Critère du coude** : on observe un décrochement après le 2ème axe suivi d'une décroissance régulière.
+- **Critère d'inertie cumulée** : les deux premiers axes concentrent l'essentiel de l'information interprétable.
+
+**Décision :** On retient les **deux premiers axes** pour l'interprétation principale (complétée par l'axe 3 si nécessaire).
+
+## 3. Interprétation des axes :
+
+```{r fig.width=8, fig.height=7}
+fviz_pca_var(res.pca1, axes = c(1,2), col.var = "cos2", repel = TRUE) +
+  scale_color_gradient2(low="white", mid="blue", high="red", midpoint=0.4) +
+  theme_minimal()
+```
+
+```{r}
+round(res.pca1$var$coord[, 1:3], 3)
+```
+
+**Interprétation de la carte des variables (axes 1 et 2) :**
+
+Les deux premières dimensions contiennent une part importante de l'inertie totale.
+
+Les variables correspondant à **overwhelmed, worry, nervous, emot_exhaust, chron_fatigue, neg_thoughts, insomnia, tired_sleep, goal_pressure, deadlines_tens, concentration, drowsy, cant_disconnect** sont **corrélées positivement entre elles** et contribuent majoritairement à la construction du **premier axe**. Elles sont **opposées** aux variables **manage_emot, bounce_back, optimistic, self_care, ask_help, collegue_supp, talk_superv**.
+
+On conclut que le **premier axe** oppose les individus en **état de mal-être / surcharge psychologique** (valeurs positives : stress élevé, anxiété, fatigue chronique, burnout) aux individus en **équilibre émotionnel / capacité d'adaptation** (valeurs négatives : optimisme, résilience, soutien social, auto-gestion émotionnelle). Cet axe peut être interprété comme un **axe général de détresse psychologique**.
+
+Le **deuxième axe** oppose les variables liées au **désengagement / isolement** (lost_meaning, cynical, isolated, motiv_drop) aux variables liées aux **manifestations physiologiques du stress** (substances, sleep_interr, avoid_fear). Cet axe reflète une **distinction entre burnout professionnel/scolaire et anxiété somatique**.
+
+## 4. Interprétation de la carte des individus :
+
+```{r fig.width=8, fig.height=6}
+fviz_pca_ind(res.pca1, geom = "point", col.ind = "cos2") +
+  scale_color_gradient2(low="blue", mid="white", high="red", midpoint=0.4) +
+  theme_minimal()
+```
+
+```{r fig.width=8, fig.height=6}
+# individus colorés par statut (Étudiant / Salarié)
+grp_statut <- factor(statut[keep])
+fviz_pca_ind(res.pca1, axes = c(1,2), habillage = grp_statut,
+             addEllipses = TRUE, ellipse.level = 0.68,
+             geom = "point", palette = c("#4C72B0","#C44E52"),
+             title = "Individus — coloration par Statut")
+```
+
+```{r fig.width=8, fig.height=6}
+grp_genre <- factor(genre[keep])
+fviz_pca_ind(res.pca1, axes = c(1,2), habillage = grp_genre,
+             addEllipses = TRUE, ellipse.level = 0.68,
+             geom = "point", palette = c("#DD8452","#55A868"),
+             title = "Individus — coloration par Genre")
+```
+
+Les individus situés à **droite** du plan (valeurs positives sur l'axe 1) sont ceux qui expriment les niveaux les plus élevés de **stress, anxiété et épuisement**, tandis que ceux situés à **gauche** présentent un meilleur équilibre psychologique.
+
+# Analyse de Correspondance Multiple :
+
+## But de l'ACM :
+
+Résumer et visualiser le tableau de données contenant les **10 questions Oui/Non** portant sur les comportements de santé (consultation, sport, quitter, applications numériques, programmes d'aide, arrêt maladie, relaxation, alimentation, hobby, intérêt plateforme).
+
+L'objectif est d'identifier :
+- Un groupe de personnes ayant un **profil similaire** dans leurs réponses.
+- Les **associations entre les catégories** des variables.
+
+## 1. Choix du nombre d'axes :
+
+```{r}
+keep_mca <- complete.cases(YN)
+YN_fac <- data.frame(lapply(YN[keep_mca, ], factor))
+res.mca <- MCA(YN_fac, graph = FALSE)
+res.mca$eig
+```
+
+```{r fig.width=8, fig.height=5}
+fviz_screeplot(res.mca, addlabels = TRUE,
+               main = "Scree plot — ACM")
+```
+
+En ACM, le seuil de rétention des axes est **1/m** (où m = nombre de variables actives = 10, soit seuil = 0.1 sur les valeurs propres ou 10% de variance). On retient les axes dépassant ce seuil.
+
+## 2. Interprétation de la première carte des modalités :
+
+```{r fig.width=8, fig.height=7}
+fviz_mca_var(res.mca, repel = TRUE, ggtheme = theme_minimal(),
+             title = "Variable categories — MCA")
+```
+
+Il suffit d'identifier les groupes de modalités qui sont proches dans la carte.
+
+- On a un **premier groupe** de modalités constitué de : **consult_pro_Oui, relax_Oui, app_num_Oui, hobby_Oui, sport_Oui**, dont l'interprétation est la suivante : les individus **proactifs sur leur santé mentale** (qui consultent, pratiquent la relaxation, utilisent des applications et entretiennent un hobby).
+
+- On a un **deuxième groupe** constitué de : **consult_pro_Non, relax_Non, app_num_Non, quitter_Non, arret_maladie_Non**, dont l'interprétation est la suivante : les individus **non engagés dans une démarche active** de bien-être mental (ni consultation, ni méditation, ni outils numériques).
+
+## 3. Interprétation de la première carte des individus :
+
+```{r fig.width=8, fig.height=6}
+fviz_mca_biplot(res.mca, col.ind = "cos2", invisible = "var",
+                repel = TRUE, ggtheme = theme_minimal())
+```
+
+# Classification :
+
+## 1. But de la Classification :
+
+L'idée de classification des différents éléments d'un jeu de données en plusieurs catégories est de regrouper les data en fonction de leur similarité. Comme les data présentent des caractéristiques communes, il est plus facile de prédire leur comportement et de profiler les grands **types de bien-être mental**.
+
+## 2. Classification (HCPC sur les composantes de l'ACP) :
+
+```{r fig.width=8, fig.height=6}
+res.pca2 <- PCA(X, ncp = 4, graph = FALSE)
+res.hcpc <- HCPC(res.pca2, nb.clust = 4, graph = FALSE)
+plot(res.hcpc, choice = "tree", title = "Dendrogramme — Classification hiérarchique")
+```
+
+```{r fig.width=8, fig.height=6}
+fviz_cluster(res.hcpc, repel = TRUE, show.clust.cent = TRUE,
+             palette = "jco", ggtheme = theme_minimal(),
+             main = "Factor map — Classes des individus")
+```
+
+## 3. Les Classes Observées :
+
+```{r}
+# description des classes par les variables
+res.hcpc$desc.var$quanti
+```
+
+**Interprétation des 4 classes (profils de bien-être mental) :**
+
+- **Cluster 1** : la catégorie des individus en **équilibre psychologique et bien-être élevé** (scores faibles sur stress/anxiété, scores élevés sur optimisme, résilience, auto-gestion émotionnelle). Profil protecteur.
+
+- **Cluster 2** : la catégorie des individus avec **stress modéré** mais **ressources internes préservées** (bonne gestion émotionnelle malgré la pression professionnelle ou scolaire).
+
+- **Cluster 3** : la catégorie des individus en **surcharge anxieuse avec troubles du sommeil** (scores élevés sur insomnie, réveil fatigué, tension liée aux délais, préoccupations, mais motivation encore présente).
+
+- **Cluster 4** : la catégorie des individus en **burnout / détresse psychologique avancée** (scores maximaux sur épuisement émotionnel, perte de sens, cynisme, fatigue chronique, isolement). Profil à risque, nécessitant une intervention prioritaire.
+
+# Conclusion :
+
+L'analyse a permis de mettre en évidence :
+
+1. Une **dimension principale de détresse psychologique** (axe 1 de l'ACP) qui oppose les individus en mal-être aux individus en équilibre.
+2. Une **seconde dimension** distinguant le désengagement motivationnel des manifestations anxio-somatiques.
+3. Une **typologie en 4 profils de bien-être**, du plus protecteur (cluster 1) au plus vulnérable (cluster 4).
+4. Un lien entre **comportements proactifs de santé** (sport, consultation, relaxation, hobby) et **meilleur équilibre psychologique** (confirmé par l'ACM).
+
+Ces résultats suggèrent l'intérêt de développer des programmes de prévention ciblant spécifiquement les individus du cluster 4 (burnout avancé) et de promouvoir les comportements du premier groupe identifié en ACM auprès de l'ensemble de la population enquêtée.
+
+**Merci pour Votre attention — Bacem Ben hamadd —**

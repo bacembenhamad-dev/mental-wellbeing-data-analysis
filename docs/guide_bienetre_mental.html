@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide — Enquête Bien-être Mental</title>
+<style>
+:root {
+  --primary: #2d1b69;
+  --secondary: #6C63FF;
+  --accent: #a78bfa;
+  --green: #2EC4B6;
+  --orange: #F4A261;
+  --red: #E76F51;
+  --light: #f0eeff;
+  --bg: #f8f7ff;
+  --text: #1a1a3e;
+  --gray: #6b7280;
+  --border: #e5e0ff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 960px; margin: 0 auto; padding: 20px; }
+
+.header { background: linear-gradient(135deg, #1a1a3e, #2d1b69, #4c1d95); color: white; padding: 40px 30px; border-radius: 16px; margin-bottom: 28px; text-align: center; }
+.header h1 { font-size: 1.8em; margin-bottom: 8px; }
+.header p { opacity: 0.8; font-size: 1em; }
+.header .meta { display: flex; justify-content: center; gap: 24px; margin-top: 14px; font-size: 0.85em; opacity: 0.65; flex-wrap: wrap; }
+
+.lang-tabs { display: flex; gap: 8px; margin-bottom: 20px; position: sticky; top: 0; z-index: 100; background: var(--bg); padding: 12px 0; border-bottom: 2px solid var(--border); }
+.lang-tab { flex: 1; padding: 10px; border: 2px solid var(--border); border-radius: 10px; background: white; cursor: pointer; font-weight: 600; text-align: center; transition: all 0.2s; font-size: 0.9em; }
+.lang-tab:hover { border-color: var(--secondary); }
+.lang-tab.active { background: var(--secondary); color: white; border-color: var(--secondary); }
+.lang-tab .flag { font-size: 1.3em; display: block; margin-bottom: 2px; }
+
+.part-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0 12px; }
+.part-divider::before, .part-divider::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, transparent, var(--border)); }
+.part-divider::after { background: linear-gradient(90deg, var(--border), transparent); }
+.part-label { background: var(--primary); color: white; padding: 4px 16px; border-radius: 20px; font-size: 0.78em; font-weight: 700; letter-spacing: 0.08em; white-space: nowrap; }
+
+.section { background: white; border-radius: 14px; padding: 20px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(108,99,255,0.06); }
+.section-header { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+.section-icon { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1em; flex-shrink: 0; color: white; font-weight: bold; }
+.section-info { flex: 1; }
+.section-title { font-size: 1.05em; font-weight: 700; color: var(--primary); }
+.section-subtitle { font-size: 0.8em; color: var(--gray); margin-top: 1px; }
+.section-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.72em; font-weight: 600; margin-left: 8px; background: var(--light); color: var(--secondary); }
+.section-toggle { font-size: 1.1em; color: var(--gray); transition: transform 0.2s; flex-shrink: 0; }
+.section-toggle.open { transform: rotate(90deg); }
+.section-body { margin-top: 16px; display: none; }
+.section-body.open { display: block; }
+
+.instruction-box { background: var(--light); border-left: 3px solid var(--secondary); padding: 10px 14px; border-radius: 0 8px 8px 0; margin-bottom: 14px; font-size: 0.88em; color: #3730a3; font-style: italic; }
+.warning-box { background: #FFF8E1; border-left: 3px solid #F4A261; padding: 10px 14px; border-radius: 0 8px 8px 0; margin-bottom: 14px; font-size: 0.85em; color: #7c4c00; }
+.warning-box strong { color: #E65100; }
+
+.scale-box { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.scale-pill { display: inline-block; padding: 3px 10px; background: white; border: 1px solid var(--border); border-radius: 20px; font-size: 0.75em; color: var(--gray); }
+.scale-pill strong { color: var(--primary); }
+
+.q-card { background: #fafafa; border: 1px solid #ede9ff; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+.q-card:last-child { margin-bottom: 0; }
+.q-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.q-num { font-weight: 700; color: var(--secondary); font-size: 0.85em; }
+.q-tag { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.7em; font-weight: 700; }
+.tag-choice  { background: #FFF3E0; color: #E65100; }
+.tag-scale5  { background: #E8F5E9; color: #2E7D32; }
+.tag-yesno   { background: #FCE4EC; color: #C62828; }
+.tag-text    { background: #F3E5F5; color: #6A1B9A; }
+.tag-common  { background: #E3F2FD; color: #1565C0; }
+.tag-branch  { background: #FFE0B2; color: #BF360C; }
+
+.copy-row { display: flex; align-items: flex-start; gap: 8px; }
+.copy-content { flex: 1; background: white; border: 1px solid #e0daff; border-radius: 8px; padding: 10px 14px; font-size: 0.93em; line-height: 1.55; word-break: break-word; color: var(--text); }
+.copy-btn { background: var(--secondary); color: white; border: none; border-radius: 8px; padding: 8px 13px; cursor: pointer; font-size: 0.78em; font-weight: 600; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
+.copy-btn:hover { background: var(--primary); }
+.copy-btn.copied { background: var(--green); }
+
+.opts-list { margin-top: 8px; padding-left: 4px; }
+.opts-list li { list-style: none; font-size: 0.85em; color: var(--gray); padding: 2px 0; }
+.opts-list li::before { content: "○ "; color: var(--secondary); }
+
+.progress-bar { width: 100%; height: 5px; background: #e0daff; border-radius: 3px; margin: 16px 0 8px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), var(--green)); border-radius: 3px; transition: width 0.4s; }
+.progress-text { text-align: center; font-size: 0.82em; color: var(--gray); margin-bottom: 16px; }
+
+@media (max-width: 600px) {
+  .container { padding: 12px; }
+  .header { padding: 24px 16px; }
+  .header h1 { font-size: 1.25em; }
+  .header .meta { flex-direction: column; gap: 4px; }
+  .lang-tab { padding: 7px 4px; font-size: 0.76em; }
+  .section { padding: 14px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>🧠 Enquête Bien-être Mental</h1>
+  <p>Survey Guide — 3 langues · 58 questions · 10 dimensions</p>
+  <div class="meta">
+    <span>👤 Partie I : Profil Démographique</span>
+    <span>📊 Partie II : Vécu prof. & personnel (1–5)</span>
+    <span>🌿 Partie III : Équilibre & environnement (1–5)</span>
+    <span>✅ Partie IV : Habitudes (Oui / Non)</span>
+  </div>
+</div>
+
+<div class="lang-tabs">
+  <div class="lang-tab active" onclick="switchLang('fr')"><span class="flag">🇫🇷</span>Français</div>
+  <div class="lang-tab" onclick="switchLang('en')"><span class="flag">🇬🇧</span>English</div>
+  <div class="lang-tab" onclick="switchLang('tn')"><span class="flag">🇹🇳</span>Tounsi</div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="progress-text" id="progressText">Cliquez sur chaque section pour la déplier</div>
+
+<div id="content"></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// SECTIONS META
+// ═══════════════════════════════════════════════════════════
+const SECTIONS_META = [
+  { key:'generalInfo', color:'#1B4F72', icon:'◎', type:'choice', partI:true   },
+  { key:'worker',      color:'#2E86C1', icon:'◧', type:'choice'               },
+  { key:'student',     color:'#1B8A5A', icon:'◈', type:'choice'               },
+  { key:'stressProf',  color:'#E74C3C', icon:'◉', type:'scale5', partII:true  },
+  { key:'anxiety',     color:'#8E44AD', icon:'◬', type:'scale5'               },
+  { key:'sleep',       color:'#2980B9', icon:'◐', type:'scale5'               },
+  { key:'burnout',     color:'#D35400', icon:'◇', type:'scale5', partIII:true },
+  { key:'wellbeing',   color:'#27AE60', icon:'△', type:'scale5'               },
+  { key:'socialSupp',  color:'#2C3E50', icon:'⬡', type:'scale5'               },
+  { key:'habits',      color:'#7F8C8D', icon:'⊡', type:'yesno',  partIV:true  },
+];
+
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+const DATA = {
+
+  // ─── FRANÇAIS ───────────────────────────────────────────
+  fr: {
+    parts: {
+      I:   'PARTIE I — Profil Démographique (Choix multiples)',
+      II:  'PARTIE II — Vécu professionnel et personnel (Échelle 1–5)',
+      III: 'PARTIE III — Équilibre et environnement (Échelle 1–5)',
+      IV:  'PARTIE IV — Habitudes & Expériences (Oui / Non)',
+    },
+    copyLabel: 'Copier',
+    copiedLabel: '✓ Copié',
+    scale5: [
+      '1 = Pas du tout d\'accord',
+      '2 = Plutôt pas d\'accord',
+      '3 = Ni l\'un ni l\'autre',
+      '4 = Plutôt d\'accord',
+      '5 = Tout à fait d\'accord',
+    ],
+    yesno: ['Oui','Non'],
+    sections: {
+      generalInfo: {
+        title: 'Informations générales',
+        subtitle: 'Démographie et profil de base — Q1 à Q4',
+        instruction: 'Veuillez répondre aux questions suivantes en sélectionnant la réponse la plus adaptée à votre situation.',
+        warning: '⚠️ La Q4 (statut actuel) servira de <strong>branchement conditionnel</strong> : réponse « Étudiant(e) » → Section Étudiant · réponse « Travailleur(se) » → Section Travailleur.',
+      },
+      worker: {
+        title: 'Section Travailleur (Q5–10)',
+        subtitle: 'Profil professionnel — uniquement pour les personnes en activité',
+        instruction: 'Ces questions s\'adressent uniquement aux personnes actuellement en activité professionnelle.',
+        warning: '➡️ À la fin de cette section, <strong>rediriger vers la Question commune</strong>, puis vers la Partie II.',
+      },
+      student: {
+        title: 'Section Étudiant (Q5–11)',
+        subtitle: 'Profil académique — uniquement pour les étudiants',
+        instruction: 'Ces questions s\'adressent uniquement aux étudiants.',
+        warning: '➡️ À la fin de cette section, <strong>rediriger vers la Question commune</strong>, puis vers la Partie II.',
+      },
+      stressProf: {
+        title: 'Stress professionnel',
+        subtitle: 'Axe A — Pression, surcharge et déconnexion',
+        instruction: 'Pour chaque affirmation, indiquez votre degré d\'accord sur une échelle de 1 à 5.',
+      },
+      anxiety: {
+        title: 'Anxiété généralisée',
+        subtitle: 'Axe B — Pensées intrusives, nervosité et évitement',
+        instruction: 'Pour chaque affirmation, indiquez votre degré d\'accord sur une échelle de 1 à 5.',
+      },
+      sleep: {
+        title: 'Sommeil & Fatigue',
+        subtitle: 'Axe C — Qualité du sommeil et niveaux d\'énergie',
+        instruction: 'Pour chaque affirmation, indiquez votre degré d\'accord sur une échelle de 1 à 5.',
+      },
+      burnout: {
+        title: 'Épuisement / Burnout',
+        subtitle: 'Axe D — Détachement, perte de sens et fatigue chronique',
+        instruction: 'Pour chaque affirmation, indiquez votre degré d\'accord sur une échelle de 1 à 5.',
+      },
+      wellbeing: {
+        title: 'Bien-être émotionnel',
+        subtitle: 'Axe E — Résilience, optimisme et satisfaction',
+        instruction: 'Pour chaque affirmation, indiquez votre degré d\'accord sur une échelle de 1 à 5.',
+      },
+      socialSupp: {
+        title: 'Soutien social',
+        subtitle: 'Axe F — Relations professionnelles et ressources disponibles',
+        instruction: 'Pour chaque affirmation, indiquez votre degré d\'accord sur une échelle de 1 à 5.',
+      },
+      habits: {
+        title: 'Habitudes & Expériences',
+        subtitle: 'Pratiques quotidiennes et recours aux ressources',
+        instruction: 'Veuillez répondre par Oui ou Non à chaque question.',
+      },
+    },
+    q: {
+      generalInfo: [
+        { q: 'Quel est votre âge ?', opts: ['18–24 ans','25–34 ans','35–44 ans','45–54 ans','55 ans et plus'] },
+        { q: 'Quel est votre sexe ?', opts: ['Homme','Femme','Autre / Préfère ne pas répondre'] },
+        { q: 'Quelle est votre situation familiale ?', opts: ['Célibataire','En couple','Marié(e)','Divorcé(e) / Séparé(e)','Veuf / Veuve'] },
+        { q: 'Quel est votre statut actuel ?', opts: ['Étudiant(e)','Travailleur(se)'], branch: true },
+      ],
+      worker: [
+        { q: 'Quel est votre niveau d\'études le plus élevé ?', opts: ['Sans diplôme','Baccalauréat','Licence (Bac+3)','Master (Bac+5)','Doctorat ou plus'] },
+        { q: 'Quel est votre secteur d\'activité ?', opts: ['Technologies / IT','Santé','Éducation','Finance / Banque','Industrie / BTP','Commerce / Vente','Administration publique','Autre'] },
+        { q: 'Quelle est votre ancienneté dans votre poste actuel ?', opts: ['Moins d\'1 an','1–3 ans','3–5 ans','5–10 ans','Plus de 10 ans'] },
+        { q: 'Quel type de contrat avez-vous ?', opts: ['CDI','CDD','Freelance / Indépendant','Stage / Alternance','Sans emploi'] },
+        { q: 'Quelle est la taille de votre entreprise ?', opts: ['1–10 employés','11–50 employés','51–200 employés','201–1000 employés','Plus de 1000 employés'] },
+        { q: 'Occupez-vous un poste avec des responsabilités de management ?', opts: ['Oui','Non'] },
+      ],
+      student: [
+        { q: 'Quel est votre niveau d\'études actuel ?', opts: ['Baccalauréat / Préparatoire','Licence (L1, L2, L3)','Master (M1, M2)','Doctorat','Formation professionnelle / Autre'] },
+        { q: 'Quelle est votre filière ou domaine d\'études ?', opts: ['Sciences & Technologies','Santé & Médecine','Sciences humaines & sociales','Droit & Sciences politiques','Économie, Gestion & Commerce','Arts, Lettres & Langues','Autre'] },
+        { q: 'En quelle année êtes-vous dans votre cursus actuel ?', opts: ['1ère année','2ème année','3ème année','4ème année ou plus'] },
+        { q: 'Quel est le type de votre établissement ?', opts: ['Université publique','Université / École privée','Grande école / Classe préparatoire','Institut / Centre de formation'] },
+        { q: 'Exercez-vous une activité professionnelle en parallèle de vos études ?', opts: ['Non, aucune','Oui, un emploi à temps partiel','Oui, un emploi à temps plein','Oui, un stage ou une alternance'] },
+        { q: 'Combien d\'heures de cours avez-vous en moyenne par semaine ?', opts: ['Moins de 15 heures','15–25 heures','25–35 heures','Plus de 35 heures'] },
+        { q: 'Quel est votre mode de logement actuel ?', opts: ['Chez les parents / famille','Résidence universitaire (cité U)','Colocation','Seul(e) en appartement','Autre'] },
+        { q: 'Dans quelle région / pays vous trouvez-vous ?', opts: null, type:'text', common: true },
+      ],
+      stressProf: [
+        'Je me sens souvent débordé(e) par ma charge de travail.',
+        'Les délais serrés au travail me provoquent une tension physique.',
+        'Je ressens une pression constante pour atteindre mes objectifs professionnels.',
+        'Les conflits ou tensions au travail affectent fortement mon humeur.',
+        'Je n\'arrive pas à déconnecter du travail pendant mon temps libre.',
+      ],
+      anxiety: [
+        'Il m\'arrive de ressentir une inquiétude excessive sans raison précise.',
+        'J\'ai du mal à contrôler mes pensées négatives ou catastrophiques.',
+        'Je me sens nerveux(se) ou tendu(e) dans des situations quotidiennes.',
+        'J\'éprouve des difficultés à me concentrer à cause de mes préoccupations.',
+        'J\'évite certaines situations par peur ou par anxiété.',
+      ],
+      sleep: [
+        'Je me réveille fatigué(e) même après une nuit complète de sommeil.',
+        'J\'ai des difficultés à m\'endormir le soir.',
+        'Mon sommeil est souvent interrompu pendant la nuit.',
+        'Je me sens somnolent(e) ou en manque d\'énergie pendant la journée.',
+        'Je consomme des substances (café, médicaments, etc.) pour m\'aider à dormir ou rester éveillé(e).',
+      ],
+      burnout: [
+        'Je me sens émotionnellement épuisé(e) à la fin de la journée de travail.',
+        'J\'ai l\'impression que mon travail n\'a plus de sens ou d\'intérêt.',
+        'Je me sens détaché(e) ou cynique envers mon travail.',
+        'J\'ai de plus en plus de mal à me motiver pour aller travailler.',
+        'Je ressens une fatigue chronique qui ne disparaît pas avec le repos.',
+      ],
+      wellbeing: [
+        'Je suis capable de gérer efficacement mes émotions face aux difficultés.',
+        'Je me sens généralement optimiste quant à mon avenir.',
+        'Après un échec, je réussis à rebondir relativement vite.',
+        'Je prends régulièrement du temps pour des activités qui me font du bien.',
+        'Je suis satisfait(e) de l\'équilibre entre ma vie professionnelle et personnelle.',
+      ],
+      socialSupp: [
+        'Mes collègues sont une source de soutien quand je traverse des moments difficiles.',
+        'Je peux parler ouvertement de mes problèmes avec mon supérieur hiérarchique.',
+        'Je me sens isolé(e) dans mon environnement de travail.',
+        'Mon entreprise propose des ressources pour le bien-être des employés.',
+        'Je me sens à l\'aise pour demander de l\'aide quand j\'en ai besoin.',
+      ],
+      habits: [
+        'Avez-vous déjà consulté un professionnel de santé mentale ?',
+        'Pratiquez-vous une activité physique régulière (au moins 2 fois par semaine) ?',
+        'Avez-vous déjà envisagé de quitter votre emploi à cause du stress ?',
+        'Utilisez-vous des applications ou outils numériques pour gérer votre bien-être mental ?',
+        'Votre entreprise propose-t-elle un programme d\'aide aux employés (PAE) ?',
+        'Avez-vous pris un arrêt maladie lié au stress au cours des 12 derniers mois ?',
+        'Pratiquez-vous régulièrement des techniques de relaxation (méditation, yoga, etc.) ?',
+        'Estimez-vous que votre alimentation est équilibrée et saine ?',
+        'Avez-vous un hobby ou une passion en dehors du travail ?',
+        'Seriez-vous intéressé(e) par une plateforme de suivi de votre bien-être mental ?',
+      ],
+    },
+  },
+
+  // ─── ENGLISH ─────────────────────────────────────────────
+  en: {
+    parts: {
+      I:   'PART I — Demographic Profile (Multiple Choice)',
+      II:  'PART II — Professional & Personal Experience (Scale 1–5)',
+      III: 'PART III — Balance & Environment (Scale 1–5)',
+      IV:  'PART IV — Habits & Experiences (Yes / No)',
+    },
+    copyLabel: 'Copy',
+    copiedLabel: '✓ Copied',
+    scale5: [
+      '1 = Strongly disagree',
+      '2 = Disagree',
+      '3 = Neutral',
+      '4 = Agree',
+      '5 = Strongly agree',
+    ],
+    yesno: ['Yes','No'],
+    sections: {
+      generalInfo: {
+        title: 'General Information',
+        subtitle: 'Demographics and basic profile — Q1 to Q4',
+        instruction: 'Please answer the following questions by selecting the option that best matches your situation.',
+        warning: '⚠️ Q4 (current status) will be used as a <strong>conditional branch</strong>: "Student" → Student Section · "Worker" → Worker Section.',
+      },
+      worker: {
+        title: 'Worker Section (Q5–10)',
+        subtitle: 'Professional profile — only for employed individuals',
+        instruction: 'These questions are addressed only to people currently in professional employment.',
+        warning: '➡️ At the end of this section, <strong>redirect to the Common Question</strong>, then to Part II.',
+      },
+      student: {
+        title: 'Student Section (Q5–11)',
+        subtitle: 'Academic profile — only for students',
+        instruction: 'These questions are addressed only to students.',
+        warning: '➡️ At the end of this section, <strong>redirect to the Common Question</strong>, then to Part II.',
+      },
+      stressProf: {
+        title: 'Workplace Stress',
+        subtitle: 'Axis A — Pressure, overload and disconnection',
+        instruction: 'For each statement, indicate your level of agreement on a scale from 1 to 5.',
+      },
+      anxiety: {
+        title: 'General Anxiety',
+        subtitle: 'Axis B — Intrusive thoughts, tension and avoidance',
+        instruction: 'For each statement, indicate your level of agreement on a scale from 1 to 5.',
+      },
+      sleep: {
+        title: 'Sleep & Fatigue',
+        subtitle: 'Axis C — Sleep quality and energy levels',
+        instruction: 'For each statement, indicate your level of agreement on a scale from 1 to 5.',
+      },
+      burnout: {
+        title: 'Burnout',
+        subtitle: 'Axis D — Detachment, loss of meaning and chronic fatigue',
+        instruction: 'For each statement, indicate your level of agreement on a scale from 1 to 5.',
+      },
+      wellbeing: {
+        title: 'Emotional Well-being',
+        subtitle: 'Axis E — Resilience, optimism and satisfaction',
+        instruction: 'For each statement, indicate your level of agreement on a scale from 1 to 5.',
+      },
+      socialSupp: {
+        title: 'Social Support',
+        subtitle: 'Axis F — Professional relationships and available resources',
+        instruction: 'For each statement, indicate your level of agreement on a scale from 1 to 5.',
+      },
+      habits: {
+        title: 'Habits & Experiences',
+        subtitle: 'Daily practices and use of resources',
+        instruction: 'Please answer Yes or No to each question.',
+      },
+    },
+    q: {
+      generalInfo: [
+        { q: 'What is your age?', opts: ['18–24 years','25–34 years','35–44 years','45–54 years','55 years and over'] },
+        { q: 'What is your gender?', opts: ['Male','Female','Other / Prefer not to say'] },
+        { q: 'What is your marital status?', opts: ['Single','In a relationship','Married','Divorced / Separated','Widowed'] },
+        { q: 'What is your current status?', opts: ['Student','Worker'], branch: true },
+      ],
+      worker: [
+        { q: 'What is your highest level of education?', opts: ['No diploma','High school diploma','Bachelor\'s degree','Master\'s degree','Doctorate or higher'] },
+        { q: 'What is your industry/sector?', opts: ['Technology / IT','Healthcare','Education','Finance / Banking','Industry / Construction','Sales / Retail','Public administration','Other'] },
+        { q: 'How long have you been in your current position?', opts: ['Less than 1 year','1–3 years','3–5 years','5–10 years','More than 10 years'] },
+        { q: 'What type of contract do you have?', opts: ['Permanent contract','Fixed-term contract','Freelance / Self-employed','Internship / Apprenticeship','Unemployed'] },
+        { q: 'What is the size of your company?', opts: ['1–10 employees','11–50 employees','51–200 employees','201–1000 employees','More than 1000 employees'] },
+        { q: 'Do you hold a management position?', opts: ['Yes','No'] },
+      ],
+      student: [
+        { q: 'What is your current level of education?', opts: ['High school / Preparatory','Bachelor\'s (Year 1, 2, 3)','Master\'s (Year 1, 2)','Doctorate','Vocational training / Other'] },
+        { q: 'What is your field of study?', opts: ['Science & Technology','Health & Medicine','Humanities & Social Sciences','Law & Political Science','Economics, Business & Management','Arts, Literature & Languages','Other'] },
+        { q: 'What year are you in your current program?', opts: ['1st year','2nd year','3rd year','4th year or more'] },
+        { q: 'What type of institution do you attend?', opts: ['Public university','Private university / school','Elite school / Preparatory class','Institute / Training center'] },
+        { q: 'Do you work alongside your studies?', opts: ['No, not at all','Yes, a part-time job','Yes, a full-time job','Yes, an internship or apprenticeship'] },
+        { q: 'How many hours of classes do you have per week on average?', opts: ['Less than 15 hours','15–25 hours','25–35 hours','More than 35 hours'] },
+        { q: 'What is your current living arrangement?', opts: ['With parents / family','Student residence (dorm)','Shared housing','Living alone in an apartment','Other'] },
+        { q: 'What region / country are you located in?', opts: null, type:'text', common: true },
+      ],
+      stressProf: [
+        'I often feel overwhelmed by my workload.',
+        'Tight deadlines at work cause me physical tension.',
+        'I feel constant pressure to meet my professional goals.',
+        'Conflicts or tensions at work strongly affect my mood.',
+        'I cannot disconnect from work during my free time.',
+      ],
+      anxiety: [
+        'I sometimes experience excessive worry for no specific reason.',
+        'I find it hard to control my negative or catastrophic thoughts.',
+        'I feel nervous or tense in everyday situations.',
+        'I have trouble concentrating because of my worries.',
+        'I avoid certain situations out of fear or anxiety.',
+      ],
+      sleep: [
+        'I wake up tired even after a full night\'s sleep.',
+        'I have difficulty falling asleep at night.',
+        'My sleep is often interrupted during the night.',
+        'I feel drowsy or low on energy during the day.',
+        'I use substances (coffee, medication, etc.) to help me sleep or stay awake.',
+      ],
+      burnout: [
+        'I feel emotionally exhausted at the end of the workday.',
+        'I feel that my work has lost its meaning or interest.',
+        'I feel detached or cynical towards my work.',
+        'I find it increasingly difficult to motivate myself to go to work.',
+        'I experience chronic fatigue that does not go away with rest.',
+      ],
+      wellbeing: [
+        'I am able to effectively manage my emotions when facing difficulties.',
+        'I generally feel optimistic about my future.',
+        'After a failure, I manage to bounce back relatively quickly.',
+        'I regularly take time for activities that make me feel good.',
+        'I am satisfied with my work-life balance.',
+      ],
+      socialSupp: [
+        'My colleagues are a source of support when I go through difficult times.',
+        'I can openly talk about my problems with my supervisor.',
+        'I feel isolated in my work environment.',
+        'My company offers resources for employee well-being.',
+        'I feel comfortable asking for help when I need it.',
+      ],
+      habits: [
+        'Have you ever consulted a mental health professional?',
+        'Do you exercise regularly (at least twice a week)?',
+        'Have you ever considered leaving your job because of stress?',
+        'Do you use apps or digital tools to manage your mental well-being?',
+        'Does your company offer an Employee Assistance Program (EAP)?',
+        'Have you taken sick leave due to stress or burnout in the past 12 months?',
+        'Do you regularly practice relaxation techniques (meditation, yoga, etc.)?',
+        'Do you consider your diet to be balanced and healthy?',
+        'Do you have a hobby or passion outside of work?',
+        'Would you be interested in a platform to track your mental well-being?',
+      ],
+    },
+  },
+
+  // ─── TOUNSI ──────────────────────────────────────────────
+  tn: {
+    parts: {
+      I:   '9esm Louèl — El Profil (Choix multiples)',
+      II:  '9esm Theni — El 7ayat el mihaniya w el chakhsiya (Échelle 1–5)',
+      III: '9esm Theleth — El tawézon w el bi2a (Échelle 1–5)',
+      IV:  '9esm Rabe3 — 3adet w Expériences (Ey / Le)',
+    },
+    copyLabel: 'Copier',
+    copiedLabel: '✓ Nchat',
+    scale5: [
+      '1 = Manich mwefe9 5ater',
+      '2 = Mouch barcha mwefe9',
+      '3 = Neutral',
+      '4 = Nwefe9 shwaya',
+      '5 = Mwefe9 barcha',
+    ],
+    yesno: ['Ey','Le'],
+    sections: {
+      generalInfo: {
+        title: 'Ma3loumet 3amma',
+        subtitle: 'El profil w les informations de base — Q1 lel Q4',
+        instruction: 'Jaweb 3al as2la hedhi bel ijeba eli t9arreblek akther lel 7elek.',
+        warning: '⚠️ El Q4 (el statut) bech testa3melha <strong>branchement conditionnel</strong> : "Taleb/Talba" → 9esm ettaleb · "5eddem/5eddema" → 9esm el 5eddem.',
+      },
+      worker: {
+        title: '9esm el 5eddem (Q5–10)',
+        subtitle: 'El profil el mihani — lel 5eddema bes',
+        instruction: 'El as2la hedhi lel 5eddema eli fi 5edma taw bes.',
+        warning: '➡️ Fi e5er el 9esm hedha, <strong>wajjeh lel Question commune</strong>, w ba3den lel 9esm Theni.',
+      },
+      student: {
+        title: '9esm ettaleb (Q5–11)',
+        subtitle: 'El profil el académi — lel talaba bes',
+        instruction: 'El as2la hedhi lel talaba bes.',
+        warning: '➡️ Fi e5er el 9esm hedha, <strong>wajjeh lel Question commune</strong>, w ba3den lel 9esm Theni.',
+      },
+      stressProf: {
+        title: 'Stress fil 5edma',
+        subtitle: 'Axe A — Pression w surcharge fil 5edma',
+        instruction: 'Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5.',
+      },
+      anxiety: {
+        title: '9al9 3am',
+        subtitle: 'Axe B — Afkar mouch mlèh w nervosité',
+        instruction: 'Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5.',
+      },
+      sleep: {
+        title: 'Nor9od & Ta3ab',
+        subtitle: 'Axe C — Jowdet ennom w ta9a',
+        instruction: 'Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5.',
+      },
+      burnout: {
+        title: 'Burnout / Iste7laék',
+        subtitle: 'Axe D — Détachement w fe9dan el ma3na',
+        instruction: 'Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5.',
+      },
+      wellbeing: {
+        title: 'Ra7a nafsiya',
+        subtitle: 'Axe E — Résilience w rida',
+        instruction: 'Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5.',
+      },
+      socialSupp: {
+        title: 'Da3m ijtimé3i',
+        subtitle: 'Axe F — 3ala9et w mawéred',
+        instruction: 'Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5.',
+      },
+      habits: {
+        title: '3adet w Expériences',
+        subtitle: 'El mmaréset el yawmiya w el 7alla',
+        instruction: 'Jaweb b Ey walla Le 3al as2la hedhi.',
+      },
+    },
+    q: {
+      generalInfo: [
+        { q: '9addech 3omrek?', opts: ['18–24 sna','25–34 sna','35–44 sna','45–54 sna','55 sna walla akther'] },
+        { q: 'Chnowa el genre mte3ek?', opts: ['Rajel','Mra','A5er / Manhabch njaweb'] },
+        { q: 'Chnowa el 7ala el 3a2iliya mte3ek?', opts: ['A3zeb / 3azba','Fi 3ala9a','Mta3arres / Mta3arrsa','Motalla9 / Motalla9a','Armel / Armla'] },
+        { q: 'Chnowa el statut mte3ek taw?', opts: ['Taleb/Talba','5eddem/5eddema'], branch: true },
+      ],
+      worker: [
+        { q: 'Chnowa a3la niveau drassi 3andek?', opts: ['Bla diplome','Baccaluréa','Licence (Bac+3)','Master (Bac+5)','Doctorat walla akther'] },
+        { q: 'Chnowa el secteur eli t5eddem fih?', opts: ['Technologies / IT','Se77a','Ta3lim','Finance / Ban9a','Sina3a / BTP','Tijéra / Vente','Idara 3amma','A5er'] },
+        { q: '9addech 3andek w9et fi el poste mte3ek taw?', opts: ['A9all men sna','1–3 snin','3–5 snin','5–10 snin','Akther men 10 snin'] },
+        { q: 'Chnowa naw3 el contrat mte3ek?', opts: ['CDI','CDD','Freelance / Mosta9el','Stage / Alternance','Bla 5edma'] },
+        { q: '9addech fil chrika mte3ek men employé?', opts: ['1–10 employés','11–50 employés','51–200 employés','201–1000 employés','Akther men 1000 employé'] },
+        { q: '3andek poste de management?', opts: ['Ey','Le'] },
+      ],
+      student: [
+        { q: 'Chnowa el niveau mte3ek taw fil 9raya?', opts: ['Baccalauréa / Préparatoire','Licence (L1, L2, L3)','Master (M1, M2)','Doctorat','Formation professionnelle / A5er'] },
+        { q: 'Chnowa el filière walla el domaine mte3ek?', opts: ['Sciences & Technologies','Se77a & Teb','Sciences humaines & sociales','Droit & Sciences politiques','Economie, Gestion & Commerce','Arts, Lettres & Langues','A5er'] },
+        { q: 'Enti fi anhi sna fil cursus mte3ek?', opts: ['Sna louèl','Sna thenia','Sna theltha','Sna rab3a walla akther'] },
+        { q: 'Chnowa naw3 el mo2assasa mte3ek?', opts: ['Université publique (dawla)','Université / École privée (5assa)','Grande école / Classe préparatoire','Institut / Centre de formation'] },
+        { q: 'T5eddem 7dha el 9raya?', opts: ['Le, 7atta haja','Ey, 5edma à temps partiel','Ey, 5edma à temps plein','Ey, stage walla alternance'] },
+        { q: '9addech 3andek sa3et cours fil jom3a en moyenne?', opts: ['A9all men 15 se3a','15–25 se3a','25–35 se3a','Akther men 35 se3a'] },
+        { q: 'Win teskoun taw?', opts: ['M3a el 3a2ila','Foyer / Cité universitaire','Colocation (m3a s7abek)','Wa7dek fi appartement','A5er'] },
+        { q: 'Fi anhi région / bled enti mawjoud?', opts: null, type:'text', common: true },
+      ],
+      stressProf: [
+        'Nhoss barcha bil charge mte3 el 5edma eli 3liya.',
+        'El délais eli ydhay9ou fil 5edma ywéjthouni.',
+        'N7oss bi pression dayma bech nwosol lel objectifs mte3 el 5edma.',
+        'El conflits walla el tensions fil 5edma ya2athrou 3al mood mte3i barcha.',
+        'Ma ninajjemch nédéconnecti mel 5edma fi wa9t el ra7a mte3i.',
+      ],
+      anxiety: [
+        'Iji fi beli 9al9 kbir bla sabab wèdh.',
+        'Ma ninajjemch ncontroliw les pensées négatives walla el catastrophiques.',
+        'N7oss rohhi nerveux/nerveuse walla mchaddad/mchaddda fi 7ayeti el yawmiya.',
+        'Ma ninajjemch nconcentri 5ater mohmoum.',
+        'Nt7acha des situations min el 5of walla el 9al9.',
+      ],
+      sleep: [
+        'Nfi9 ta3ben/ta3bena 7atta ki norghod lila kemla.',
+        '3andi so3ouba bech nor9od fil lil.',
+        'Nor9od w nfi9 barcha fil lila.',
+        'N7oss rohhi ena3es walla ma3andich ta9a fil nhar.',
+        'Nesta3mel des substances (9ahwa, dwa, etc.) bech nor9od walla bech nib9a fey9an/fey9a.',
+      ],
+      burnout: [
+        'N7oss rohhi épuisé(e) émotionnellement fi e5er nhar el 5edma.',
+        'N7oss eli el 5edma mte3i ma b9etch 3andha ma3na.',
+        'N7oss rohhi détaché(e) walla cynique envers el 5edma mte3i.',
+        'Walla ashal 3liya bech nit7ammes bech nemchi nel 5edma.',
+        '3andi fatigue chronique ma temchich 7atta ki nerta7.',
+      ],
+      wellbeing: [
+        'Ninjam ncontroli les émotions mte3i mlièh 9oddem el machékel.',
+        'En général n7oss rohhi optimiste 3al mosta9bal mte3i.',
+        'Ba3d ma nfachel, ninjam nraja3 rohhi vite.',
+        'Na5ou wa9t 3al activités eli t7assisni mlièh régulièrement.',
+        'Ena radhhi/radhya 3al équilibre bin el 5edma w el 7aya el chakhsiya.',
+      ],
+      socialSupp: [
+        'El collègues mte3i y3awnounni ki nkoun fi wa9t s3ib.',
+        'Ninjam na7ki 3al problèmes mte3i m3a el chef mte3i bkol sara7a.',
+        'N7oss rohhi wa7di/wa7diya fil 5edma.',
+        'El chrika mte3i toffri des ressources lil bien-être mte3 el employés.',
+        'N7oss rohhi à l\'aise bech notélob el msa3da ki nkoun m7tajha.',
+      ],
+      habits: [
+        'Mchit 9bal 3and spécialiste fi se77a el nafsiya?',
+        'Ta3mel sport régulièrement (3al a9all marrtine fil jom3a)?',
+        'Fakkart 9bal bech tkamel mel 5edma mte3ek bsabab el stress?',
+        'Testa3mel applications walla outils numériques bech tgéri el bien-être el mental mte3ek?',
+        'El chrika mte3ek toffri programme d\'aide lel employés (PAE)?',
+        '5dhit congé maladie bsabab el stress walla el ta3ab fi e5er 12 chhar?',
+        'Ta3mel techniques de relaxation régulièrement (méditation, tanaffos, yoga, etc.)?',
+        'T7oss eli el mekla mte3ek équilibrée w s7i7a?',
+        '3andek hobby walla 7aja t7obbha barra el 5edma?',
+        'T7ebb testa3mel plateforme bech tsuivi el bien-être el mental mte3ek?',
+      ],
+    },
+  },
+};
+
+// ═══════════════════════════════════════════════════════════
+// STATE & HELPERS
+// ═══════════════════════════════════════════════════════════
+let currentLang = 'fr';
+let openSections = new Set();
+
+function switchLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach((t,i) => {
+    t.classList.toggle('active', ['fr','en','tn'][i] === lang);
+  });
+  render();
+}
+
+function copyText(text, btnId) {
+  const d = DATA[currentLang];
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = d.copiedLabel;
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1600);
+    }
+  });
+}
+
+function toggleSection(key) {
+  if (openSections.has(key)) openSections.delete(key);
+  else openSections.add(key);
+  const body = document.getElementById('body-' + key);
+  const tog  = document.getElementById('tog-'  + key);
+  if (body) body.classList.toggle('open', openSections.has(key));
+  if (tog)  tog.classList.toggle('open',  openSections.has(key));
+  updateProgress();
+}
+
+function updateProgress() {
+  const pct = Math.round((openSections.size / SECTIONS_META.length) * 100);
+  const fill = document.getElementById('progressFill');
+  const txt  = document.getElementById('progressText');
+  if (fill) fill.style.width = pct + '%';
+  if (txt) {
+    const labels = { fr:`${openSections.size} / ${SECTIONS_META.length} sections consultées`, en:`${openSections.size} / ${SECTIONS_META.length} sections opened`, tn:`${openSections.size} / ${SECTIONS_META.length} 9asem mfet7a` };
+    txt.textContent = labels[currentLang];
+  }
+}
+
+function qCard(key, idx, question, tagClass, tagLabel, extra = '') {
+  const d = DATA[currentLang];
+  const cid = `${key}_${idx}_${currentLang}`;
+  return `<div class="q-card">
+    <div class="q-header">
+      <span class="q-num">Q${idx + 1}</span>
+      <span class="q-tag ${tagClass}">${tagLabel}</span>
+      ${extra ? extra : ''}
+    </div>
+    <div class="copy-row">
+      <div class="copy-content" id="cb-${cid}">${question}</div>
+      <button class="copy-btn" id="btn-${cid}" onclick="copyText(document.getElementById('cb-${cid}').textContent,'btn-${cid}')">${d.copyLabel}</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════
+function render() {
+  const L = currentLang;
+  const d = DATA[L];
+  let html = '';
+  let partIIShown = false;
+  let partIIIShown = false;
+  let partIVShown = false;
+
+  SECTIONS_META.forEach((meta) => {
+    const sec = d.sections[meta.key];
+    const isOpen = openSections.has(meta.key);
+    const questions = d.q[meta.key];
+
+    // Part dividers
+    if (meta.partI) {
+      html += `<div class="part-divider" style="margin-top:0"><span class="part-label">${d.parts.I}</span></div>`;
+    }
+    if (meta.partII && !partIIShown) {
+      html += `<div class="part-divider"><span class="part-label">${d.parts.II}</span></div>`;
+      partIIShown = true;
+    }
+    if (meta.partIII && !partIIIShown) {
+      html += `<div class="part-divider"><span class="part-label">${d.parts.III}</span></div>`;
+      partIIIShown = true;
+    }
+    if (meta.partIV && !partIVShown) {
+      html += `<div class="part-divider"><span class="part-label">${d.parts.IV}</span></div>`;
+      partIVShown = true;
+    }
+
+    // Build questions HTML
+    let qHtml = '';
+
+    if (meta.type === 'choice') {
+      // Choice questions — show options
+      const choiceLabels = { fr:'Choix multiples', en:'Multiple choice', tn:'Choix multiples' };
+      const textLabels   = { fr:'Réponse courte', en:'Short answer', tn:'Réponse courte' };
+      const commonLabels = { fr:'Question commune', en:'Common question', tn:'Question commune' };
+      const branchLabels = { fr:'Branchement ⚠️', en:'Branch ⚠️', tn:'Branchement ⚠️' };
+
+      questions.forEach((item, i) => {
+        const isCommon = item.common;
+        const isText = item.type === 'text';
+        const isBranch = item.branch;
+        let tagClass = isText ? 'tag-text' : (isCommon ? 'tag-common' : 'tag-choice');
+        let tagLabel = isText ? textLabels[L] : (isCommon ? commonLabels[L] : choiceLabels[L]);
+        let extra = isBranch ? `<span class="q-tag tag-branch">${branchLabels[L]}</span>` : '';
+
+        let optsHtml = '';
+        if (item.opts && item.opts.length) {
+          optsHtml = `<ul class="opts-list">${item.opts.map(o => `<li>${o}</li>`).join('')}</ul>`;
+        }
+
+        const cid = `${meta.key}_${i}_${L}`;
+        qHtml += `<div class="q-card">
+          <div class="q-header">
+            <span class="q-num">Q${i + 1}</span>
+            <span class="q-tag ${tagClass}">${tagLabel}</span>
+            ${extra}
+          </div>
+          <div class="copy-row">
+            <div class="copy-content" id="cb-${cid}">${item.q}</div>
+            <button class="copy-btn" id="btn-${cid}" onclick="copyText(document.getElementById('cb-${cid}').textContent,'btn-${cid}')">${d.copyLabel}</button>
+          </div>
+          ${optsHtml}
+        </div>`;
+      });
+
+    } else if (meta.type === 'scale5') {
+      // Scale questions
+      const scalePills = d.scale5.map(l => {
+        const parts = l.split(' = ');
+        return `<span class="scale-pill"><strong>${parts[0]}</strong> = ${parts[1]}</span>`;
+      }).join('');
+      const scalePillsHtml = `<div class="scale-box">${scalePills}</div>`;
+      qHtml += scalePillsHtml;
+      const scaleLabel = { fr:'Échelle 1–5', en:'Scale 1–5', tn:'Échelle 1–5' }[L];
+      questions.forEach((q, i) => {
+        qHtml += qCard(meta.key, i, q, 'tag-scale5', scaleLabel);
+      });
+
+    } else if (meta.type === 'yesno') {
+      // Yes/No questions
+      const ynPills = d.yesno.map(l => `<span class="scale-pill"><strong>${l}</strong></span>`).join('');
+      qHtml += `<div class="scale-box">${ynPills}</div>`;
+      const ynLabel = { fr:'Oui / Non', en:'Yes / No', tn:'Ey / Le' }[L];
+      questions.forEach((q, i) => {
+        qHtml += qCard(meta.key, i, q, 'tag-yesno', ynLabel);
+      });
+    }
+
+    const countLabel = { fr:`${questions.length} questions`, en:`${questions.length} questions`, tn:`${questions.length} as2la` }[L];
+
+    html += `
+    <div class="section">
+      <div class="section-header" onclick="toggleSection('${meta.key}')">
+        <div class="section-icon" style="background:${meta.color}">${meta.icon}</div>
+        <div class="section-info">
+          <div class="section-title">${sec.title} <span class="section-badge">${countLabel}</span></div>
+          <div class="section-subtitle">${sec.subtitle}</div>
+        </div>
+        <div class="section-toggle${isOpen ? ' open' : ''}" id="tog-${meta.key}">▶</div>
+      </div>
+      <div class="section-body${isOpen ? ' open' : ''}" id="body-${meta.key}">
+        <div class="instruction-box">${sec.instruction}</div>
+        ${sec.warning ? `<div class="warning-box">${sec.warning}</div>` : ''}
+        ${qHtml}
+      </div>
+    </div>`;
+  });
+
+  document.getElementById('content').innerHTML = html;
+  updateProgress();
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>

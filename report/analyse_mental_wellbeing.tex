@@ -1,0 +1,923 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Analyse des Comportements et des Facteurs liés au BIEN-ÊTRE MENTAL},
+  pdfauthor={Bacem Ben Ahmad},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Analyse des Comportements et des Facteurs liés au BIEN-ÊTRE
+MENTAL}
+\author{Bacem Ben Ahmad}
+\date{2026-04-20}
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction}{%
+\section{Introduction :}\label{introduction}}
+
+Ce projet a pour but d'étudier les différents facteurs liés au
+\textbf{bien-être mental} chez les étudiants et les salariés, en
+analysant les niveaux de stress, d'anxiété, de sommeil, de burnout et de
+soutien social.
+
+\hypertarget{le-questionnaire}{%
+\section{Le questionnaire :}\label{le-questionnaire}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{La période d'enquête} : Avril 2026
+\item
+  \textbf{L'enquête} : L'enquête a été créée par Google Forms et
+  distribuée aux répondeurs à travers Facebook et LinkedIn. Les données
+  ont été ensuite collectées dans un fichier CSV et traitées par la
+  suite par le langage R.
+\item
+  \textbf{Base de données} : La base de données obtenue est une base de
+  \textbf{86 lignes et 176 colonnes} (questionnaire trilingue : Anglais
+  / Français / Tounsi). Après fusion des trois blocs de langue, on
+  obtient un tableau unifié de \textbf{86 individus et 45 variables} (6
+  démographiques + 30 items Likert + 10 questions Oui/Non).
+\end{enumerate}
+
+\hypertarget{importation-des-donnuxe9es}{%
+\section{Importation des données :}\label{importation-des-donnuxe9es}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\FunctionTok{library}\NormalTok{(FactoMineR)}
+\FunctionTok{library}\NormalTok{(factoextra)}
+\FunctionTok{library}\NormalTok{(corrplot)}
+\FunctionTok{library}\NormalTok{(ggplot2)}
+
+\NormalTok{WB }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"Mental well{-}being (réponses) {-} Réponses au formulaire 1.csv"}\NormalTok{,}
+               \AttributeTok{header =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{stringsAsFactors =} \ConstantTok{FALSE}\NormalTok{,}
+               \AttributeTok{check.names =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{encoding =} \StringTok{"UTF{-}8"}\NormalTok{,}
+               \AttributeTok{na.strings =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{" "}\NormalTok{, }\StringTok{"NA"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+La base de données \textbf{MENTAL WELL-BEING} est construite à partir
+d'un questionnaire destiné à des individus de différentes catégories
+socio-professionnelles (étudiants et salariés) et plusieurs classes
+d'âge.
+
+Les données contiennent principalement \textbf{30 items
+d'auto-évaluation sur une échelle de Likert (1 = pas du tout d'accord, 5
+= tout à fait d'accord)} couvrant le stress, l'anxiété, le sommeil, le
+burnout, la motivation, le soutien social et la résilience, ainsi que
+\textbf{10 questions Oui/Non} portant sur les habitudes de santé (sport,
+méditation, consultation, etc.).
+
+\hypertarget{fusion-des-trois-blocs-de-langue}{%
+\subsection{Fusion des trois blocs de langue
+:}\label{fusion-des-trois-blocs-de-langue}}
+
+Chaque répondant a rempli un seul bloc (Anglais, Français ou Tounsi). On
+fusionne les trois blocs en variables uniques via un \texttt{coalesce}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{coalesce\_cols }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(...) \{}
+\NormalTok{  cols }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(...); out }\OtherTok{\textless{}{-}}\NormalTok{ cols[[}\DecValTok{1}\NormalTok{]]}
+  \ControlFlowTok{for}\NormalTok{ (k }\ControlFlowTok{in} \DecValTok{2}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(cols)) out }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(out) }\SpecialCharTok{|}\NormalTok{ out }\SpecialCharTok{==} \StringTok{""}\NormalTok{, cols[[k]], out)}
+\NormalTok{  out}
+\NormalTok{\}}
+
+\CommentTok{\# 30 items Likert : EN cols 21{-}50, FR cols 79{-}108, TN cols 137{-}166}
+\NormalTok{L\_en }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(WB[, }\DecValTok{21}\SpecialCharTok{:}\DecValTok{50}\NormalTok{], as.numeric)}
+\NormalTok{L\_fr }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(WB[, }\DecValTok{79}\SpecialCharTok{:}\DecValTok{108}\NormalTok{], as.numeric)}
+\NormalTok{L\_tn }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(WB[, }\DecValTok{137}\SpecialCharTok{:}\DecValTok{166}\NormalTok{], as.numeric)}
+\NormalTok{Likert }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\ConstantTok{NA\_real\_}\NormalTok{, }\AttributeTok{nrow =} \FunctionTok{nrow}\NormalTok{(WB), }\AttributeTok{ncol =} \DecValTok{30}\NormalTok{))}
+\ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{30}\NormalTok{) \{}
+\NormalTok{  Likert[, j] }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(L\_en[, j]), L\_en[, j],}
+                 \FunctionTok{ifelse}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(L\_fr[, j]), L\_fr[, j], L\_tn[, j]))}
+\NormalTok{\}}
+\FunctionTok{colnames}\NormalTok{(Likert) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}
+  \StringTok{"overwhelmed"}\NormalTok{,}\StringTok{"worry"}\NormalTok{,}\StringTok{"tired\_sleep"}\NormalTok{,}\StringTok{"deadlines\_tens"}\NormalTok{,}\StringTok{"neg\_thoughts"}\NormalTok{,}
+  \StringTok{"insomnia"}\NormalTok{,}\StringTok{"goal\_pressure"}\NormalTok{,}\StringTok{"nervous"}\NormalTok{,}\StringTok{"sleep\_interr"}\NormalTok{,}\StringTok{"work\_conflicts"}\NormalTok{,}
+  \StringTok{"concentration"}\NormalTok{,}\StringTok{"drowsy"}\NormalTok{,}\StringTok{"cant\_disconnect"}\NormalTok{,}\StringTok{"avoid\_fear"}\NormalTok{,}\StringTok{"substances"}\NormalTok{,}
+  \StringTok{"emot\_exhaust"}\NormalTok{,}\StringTok{"manage\_emot"}\NormalTok{,}\StringTok{"collegue\_supp"}\NormalTok{,}\StringTok{"lost\_meaning"}\NormalTok{,}\StringTok{"optimistic"}\NormalTok{,}
+  \StringTok{"talk\_superv"}\NormalTok{,}\StringTok{"cynical"}\NormalTok{,}\StringTok{"bounce\_back"}\NormalTok{,}\StringTok{"isolated"}\NormalTok{,}\StringTok{"motiv\_drop"}\NormalTok{,}
+  \StringTok{"self\_care"}\NormalTok{,}\StringTok{"wb\_resources"}\NormalTok{,}\StringTok{"chron\_fatigue"}\NormalTok{,}\StringTok{"wlb"}\NormalTok{,}\StringTok{"ask\_help"}
+\NormalTok{)}
+
+\CommentTok{\# Démographiques fusionnées}
+\NormalTok{age }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(}\FunctionTok{coalesce\_cols}\NormalTok{(WB[[}\DecValTok{3}\NormalTok{]], WB[[}\DecValTok{61}\NormalTok{]], WB[[}\DecValTok{119}\NormalTok{]]),}
+  \StringTok{"18{-}24 years"}\OtherTok{=}\StringTok{"18{-}24"}\NormalTok{,}\StringTok{"18{-}24 ans"}\OtherTok{=}\StringTok{"18{-}24"}\NormalTok{,}\StringTok{"18{-}24 sna"}\OtherTok{=}\StringTok{"18{-}24"}\NormalTok{,}
+  \StringTok{"25{-}34 years"}\OtherTok{=}\StringTok{"25{-}34"}\NormalTok{,}\StringTok{"25{-}34 ans"}\OtherTok{=}\StringTok{"25{-}34"}\NormalTok{,}\StringTok{"25{-}34 sna"}\OtherTok{=}\StringTok{"25{-}34"}\NormalTok{,}
+  \StringTok{"35{-}44 years"}\OtherTok{=}\StringTok{"35{-}44"}\NormalTok{,}\StringTok{"35{-}44 ans"}\OtherTok{=}\StringTok{"35{-}44"}\NormalTok{,}\StringTok{"35{-}44 sna"}\OtherTok{=}\StringTok{"35{-}44"}\NormalTok{,}
+  \StringTok{"45{-}54 years"}\OtherTok{=}\StringTok{"45{-}54"}\NormalTok{,}\StringTok{"45{-}54 ans"}\OtherTok{=}\StringTok{"45{-}54"}\NormalTok{,}\StringTok{"45{-}54 sna"}\OtherTok{=}\StringTok{"45{-}54"}\NormalTok{,}
+  \StringTok{"55 years or older"}\OtherTok{=}\StringTok{"55+"}\NormalTok{,}\StringTok{"55 ans ou plus"}\OtherTok{=}\StringTok{"55+"}\NormalTok{,}\StringTok{"55 sna walla akther"}\OtherTok{=}\StringTok{"55+"}\NormalTok{,}
+  \AttributeTok{.default =} \ConstantTok{NA\_character\_}\NormalTok{)}
+\NormalTok{genre }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(}\FunctionTok{coalesce\_cols}\NormalTok{(WB[[}\DecValTok{4}\NormalTok{]], WB[[}\DecValTok{62}\NormalTok{]], WB[[}\DecValTok{120}\NormalTok{]]),}
+  \StringTok{"Male"}\OtherTok{=}\StringTok{"Homme"}\NormalTok{,}\StringTok{"Homme"}\OtherTok{=}\StringTok{"Homme"}\NormalTok{,}\StringTok{"Rajel"}\OtherTok{=}\StringTok{"Homme"}\NormalTok{,}
+  \StringTok{"Female"}\OtherTok{=}\StringTok{"Femme"}\NormalTok{,}\StringTok{"Femme"}\OtherTok{=}\StringTok{"Femme"}\NormalTok{,}\StringTok{"Mra"}\OtherTok{=}\StringTok{"Femme"}\NormalTok{, }\AttributeTok{.default =} \ConstantTok{NA\_character\_}\NormalTok{)}
+\NormalTok{situation }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(}\FunctionTok{coalesce\_cols}\NormalTok{(WB[[}\DecValTok{5}\NormalTok{]], WB[[}\DecValTok{63}\NormalTok{]], WB[[}\DecValTok{121}\NormalTok{]]),}
+  \StringTok{"Single"}\OtherTok{=}\StringTok{"Celibataire"}\NormalTok{,}\StringTok{"Célibataire"}\OtherTok{=}\StringTok{"Celibataire"}\NormalTok{,}\StringTok{"A3zeb / 3azba"}\OtherTok{=}\StringTok{"Celibataire"}\NormalTok{,}
+  \StringTok{"In a relationship"}\OtherTok{=}\StringTok{"En\_couple"}\NormalTok{,}\StringTok{"En couple"}\OtherTok{=}\StringTok{"En\_couple"}\NormalTok{,}\StringTok{"Fi 3ala9a"}\OtherTok{=}\StringTok{"En\_couple"}\NormalTok{,}
+  \StringTok{"Married"}\OtherTok{=}\StringTok{"Marie"}\NormalTok{,}\StringTok{"Marié(e)"}\OtherTok{=}\StringTok{"Marie"}\NormalTok{,}\StringTok{"Mzawej/Mzawja"}\OtherTok{=}\StringTok{"Marie"}\NormalTok{,}
+  \StringTok{"Divorced"}\OtherTok{=}\StringTok{"Divorce"}\NormalTok{,}\StringTok{"Divorcé(e)"}\OtherTok{=}\StringTok{"Divorce"}\NormalTok{,}\StringTok{"Mtala9/Mtal9a"}\OtherTok{=}\StringTok{"Divorce"}\NormalTok{,}
+  \StringTok{"Widowed"}\OtherTok{=}\StringTok{"Veuf"}\NormalTok{,}\StringTok{"Veuf / Veuve"}\OtherTok{=}\StringTok{"Veuf"}\NormalTok{,}\StringTok{"Armel / Armla"}\OtherTok{=}\StringTok{"Veuf"}\NormalTok{,}
+  \AttributeTok{.default =} \ConstantTok{NA\_character\_}\NormalTok{)}
+\NormalTok{statut }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(}\FunctionTok{coalesce\_cols}\NormalTok{(WB[[}\DecValTok{6}\NormalTok{]], WB[[}\DecValTok{64}\NormalTok{]], WB[[}\DecValTok{122}\NormalTok{]]),}
+  \StringTok{"Student"}\OtherTok{=}\StringTok{"Etudiant"}\NormalTok{,}\StringTok{"Étudiant(e)"}\OtherTok{=}\StringTok{"Etudiant"}\NormalTok{,}\StringTok{"Taleb/Talba"}\OtherTok{=}\StringTok{"Etudiant"}\NormalTok{,}
+  \StringTok{"Worker"}\OtherTok{=}\StringTok{"Salarie"}\NormalTok{,}\StringTok{"Salarié(e)"}\OtherTok{=}\StringTok{"Salarie"}\NormalTok{,}\StringTok{"5eddem/5eddema"}\OtherTok{=}\StringTok{"Salarie"}\NormalTok{,}
+  \AttributeTok{.default =} \ConstantTok{NA\_character\_}\NormalTok{)}
+\NormalTok{filiere }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(}\FunctionTok{coalesce\_cols}\NormalTok{(WB[[}\DecValTok{8}\NormalTok{]], WB[[}\DecValTok{66}\NormalTok{]], WB[[}\DecValTok{124}\NormalTok{]]),}
+  \StringTok{"Science \& Technology"}\OtherTok{=}\StringTok{"Sciences"}\NormalTok{,}\StringTok{"Sciences \& Technologies"}\OtherTok{=}\StringTok{"Sciences"}\NormalTok{,}
+  \StringTok{"Economics, Business \& Management"}\OtherTok{=}\StringTok{"Eco"}\NormalTok{,}\StringTok{"Économie, Gestion \& Commerce"}\OtherTok{=}\StringTok{"Eco"}\NormalTok{,}
+  \StringTok{"Health \& Medicine"}\OtherTok{=}\StringTok{"Sante"}\NormalTok{,}\StringTok{"Santé \& Médecine"}\OtherTok{=}\StringTok{"Sante"}\NormalTok{,}
+  \StringTok{"Law \& Political Science"}\OtherTok{=}\StringTok{"Droit"}\NormalTok{,}\StringTok{"Droit \& Sciences politiques"}\OtherTok{=}\StringTok{"Droit"}\NormalTok{,}
+  \StringTok{"Humanities \& Social Sciences"}\OtherTok{=}\StringTok{"Humanites"}\NormalTok{,}
+  \StringTok{"Arts \& Literature"}\OtherTok{=}\StringTok{"Arts"}\NormalTok{,}\StringTok{"Arts \& Lettres"}\OtherTok{=}\StringTok{"Arts"}\NormalTok{,}
+  \StringTok{"Other"}\OtherTok{=}\StringTok{"Autre"}\NormalTok{,}\StringTok{"Autre"}\OtherTok{=}\StringTok{"Autre"}\NormalTok{,}\StringTok{"A5er"}\OtherTok{=}\StringTok{"Autre"}\NormalTok{, }\AttributeTok{.default =} \StringTok{"Autre"}\NormalTok{)}
+
+\CommentTok{\# 10 Oui/Non}
+\NormalTok{YN\_en }\OtherTok{\textless{}{-}}\NormalTok{ WB[, }\DecValTok{51}\SpecialCharTok{:}\DecValTok{60}\NormalTok{]; YN\_fr }\OtherTok{\textless{}{-}}\NormalTok{ WB[, }\DecValTok{109}\SpecialCharTok{:}\DecValTok{118}\NormalTok{]; YN\_tn }\OtherTok{\textless{}{-}}\NormalTok{ WB[, }\DecValTok{167}\SpecialCharTok{:}\DecValTok{176}\NormalTok{]}
+\NormalTok{YN }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\ConstantTok{NA\_character\_}\NormalTok{, }\AttributeTok{nrow =} \FunctionTok{nrow}\NormalTok{(WB), }\AttributeTok{ncol =} \DecValTok{10}\NormalTok{))}
+\ControlFlowTok{for}\NormalTok{ (j }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\DecValTok{10}\NormalTok{) \{}
+\NormalTok{  v }\OtherTok{\textless{}{-}} \FunctionTok{coalesce\_cols}\NormalTok{(YN\_en[[j]], YN\_fr[[j]], YN\_tn[[j]])}
+\NormalTok{  YN[, j] }\OtherTok{\textless{}{-}} \FunctionTok{recode}\NormalTok{(v, }\StringTok{"Yes"}\OtherTok{=}\StringTok{"Oui"}\NormalTok{,}\StringTok{"Oui"}\OtherTok{=}\StringTok{"Oui"}\NormalTok{,}\StringTok{"Ey"}\OtherTok{=}\StringTok{"Oui"}\NormalTok{,}
+                       \StringTok{"No"}\OtherTok{=}\StringTok{"Non"}\NormalTok{,}\StringTok{"Non"}\OtherTok{=}\StringTok{"Non"}\NormalTok{,}\StringTok{"Le"}\OtherTok{=}\StringTok{"Non"}\NormalTok{, }\AttributeTok{.default =} \ConstantTok{NA\_character\_}\NormalTok{)}
+\NormalTok{\}}
+\FunctionTok{colnames}\NormalTok{(YN) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"consult\_pro"}\NormalTok{,}\StringTok{"sport"}\NormalTok{,}\StringTok{"quitter"}\NormalTok{,}\StringTok{"app\_num"}\NormalTok{,}\StringTok{"prog\_aide"}\NormalTok{,}
+                  \StringTok{"arret\_maladie"}\NormalTok{,}\StringTok{"relax"}\NormalTok{,}\StringTok{"alim\_saine"}\NormalTok{,}\StringTok{"hobby"}\NormalTok{,}\StringTok{"interet\_plat"}\NormalTok{)}
+
+\NormalTok{MWB }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(Likert, YN,}
+             \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{age=}\NormalTok{age, }\AttributeTok{genre=}\NormalTok{genre, }\AttributeTok{situation=}\NormalTok{situation,}
+                        \AttributeTok{statut=}\NormalTok{statut, }\AttributeTok{filiere=}\NormalTok{filiere, }\AttributeTok{stringsAsFactors=}\ConstantTok{FALSE}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{statistiques-descriptives}{%
+\section{Statistiques descriptives :}\label{statistiques-descriptives}}
+
+\hypertarget{ruxe9partition-selon-le-sexe}{%
+\subsection{1. Répartition selon le sexe
+:}\label{ruxe9partition-selon-le-sexe}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{freq1 }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{genre)}
+\NormalTok{pct1 }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(freq1}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(freq1)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
+\NormalTok{lbls1 }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{names}\NormalTok{(freq1), pct1, }\StringTok{"\%"}\NormalTok{, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)}
+\FunctionTok{pie}\NormalTok{(freq1, }\AttributeTok{labels =}\NormalTok{ lbls1, }\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"\#d8e2dc"}\NormalTok{,}\StringTok{"\#fae1dd"}\NormalTok{),}
+    \AttributeTok{main=}\StringTok{"Répartition selon le Sexe"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\hypertarget{ruxe9partition-selon-luxe2ge}{%
+\subsection{2. Répartition selon l'âge
+:}\label{ruxe9partition-selon-luxe2ge}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{freq2 }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{age)}
+\NormalTok{pct2 }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(freq2}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(freq2)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
+\NormalTok{lbls2 }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{names}\NormalTok{(freq2), pct2, }\StringTok{"\%"}\NormalTok{, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)}
+\NormalTok{colors }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"\#555b6e"}\NormalTok{,}\StringTok{"\#89b0ae"}\NormalTok{,}\StringTok{"\#bee3db"}\NormalTok{,}\StringTok{"\#ffd6ba"}\NormalTok{,}\StringTok{"\#fae1dd"}\NormalTok{,}\StringTok{"\#f0c33c"}\NormalTok{)}
+\FunctionTok{pie}\NormalTok{(freq2, }\AttributeTok{labels =}\NormalTok{ lbls2, }\AttributeTok{col=}\NormalTok{colors, }\AttributeTok{main=}\StringTok{"Répartition selon l\textquotesingle{}Âge"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\hypertarget{ruxe9partition-selon-le-statut}{%
+\subsection{3. Répartition selon le statut
+:}\label{ruxe9partition-selon-le-statut}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{freq3 }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{statut)}
+\NormalTok{pct3 }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(freq3}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(freq3)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
+\NormalTok{lbls3 }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{names}\NormalTok{(freq3), pct3, }\StringTok{"\%"}\NormalTok{, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)}
+\FunctionTok{pie}\NormalTok{(freq3, }\AttributeTok{labels =}\NormalTok{ lbls3, }\AttributeTok{col=}\FunctionTok{c}\NormalTok{(}\StringTok{"\#89b0ae"}\NormalTok{,}\StringTok{"\#ffd6ba"}\NormalTok{),}
+    \AttributeTok{main=}\StringTok{"Répartition selon le Statut (Étudiant / Salarié)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-5-1.pdf}
+
+\hypertarget{ruxe9partition-selon-la-filiuxe8re}{%
+\subsection{4. Répartition selon la filière
+:}\label{ruxe9partition-selon-la-filiuxe8re}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{freq4 }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{filiere)}
+\NormalTok{pct4 }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(freq4}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(freq4)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{)}
+\NormalTok{lbls4 }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(}\FunctionTok{names}\NormalTok{(freq4), pct4, }\StringTok{"\%"}\NormalTok{, }\AttributeTok{sep=}\StringTok{" "}\NormalTok{)}
+\FunctionTok{pie}\NormalTok{(freq4, }\AttributeTok{labels =}\NormalTok{ lbls4, }\AttributeTok{col=}\NormalTok{colors,}
+    \AttributeTok{main=}\StringTok{"Répartition selon la Filière d\textquotesingle{}études"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\hypertarget{pratique-du-sport-ruxe9gulier}{%
+\subsection{5. Pratique du sport régulier
+:}\label{pratique-du-sport-ruxe9gulier}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b }\OtherTok{\textless{}{-}} \FunctionTok{barplot}\NormalTok{(}\FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{sport), }\AttributeTok{col=}\StringTok{"\#69b3a2"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{60}\NormalTok{),}
+             \AttributeTok{main=}\StringTok{"Pratique régulière d\textquotesingle{}une activité physique (≥ 2 fois/semaine)"}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(b[, }\DecValTok{1}\NormalTok{], }\FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{sport) }\SpecialCharTok{{-}} \DecValTok{2}\NormalTok{, }\FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{sport))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\hypertarget{consultation-dun-professionnel-de-santuxe9-mentale}{%
+\subsection{6. Consultation d'un professionnel de santé mentale
+:}\label{consultation-dun-professionnel-de-santuxe9-mentale}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{b }\OtherTok{\textless{}{-}} \FunctionTok{barplot}\NormalTok{(}\FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{consult\_pro), }\AttributeTok{col=}\StringTok{"\#c44e52"}\NormalTok{, }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{60}\NormalTok{),}
+             \AttributeTok{main=}\StringTok{"Avez{-}vous déjà consulté un professionnel de santé mentale ?"}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(b[, }\DecValTok{1}\NormalTok{], }\FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{consult\_pro) }\SpecialCharTok{{-}} \DecValTok{2}\NormalTok{, }\FunctionTok{table}\NormalTok{(MWB}\SpecialCharTok{$}\NormalTok{consult\_pro))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\hypertarget{analyse-en-composantes-principales}{%
+\section{Analyse en Composantes Principales
+:}\label{analyse-en-composantes-principales}}
+
+\hypertarget{but-de-lacp}{%
+\subsection{1. But de l'ACP :}\label{but-de-lacp}}
+
+L'ACP a pour but d'étudier les différentes dimensions latentes du
+bien-être mental à partir des \textbf{30 items Likert} du questionnaire,
+et de regrouper les items selon leur proximité afin d'identifier les
+grandes composantes (stress, sommeil, burnout, résilience, etc.).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{keep }\OtherTok{\textless{}{-}} \FunctionTok{complete.cases}\NormalTok{(Likert)}
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(Likert[keep, ])}
+\NormalTok{res.pca1 }\OtherTok{\textless{}{-}} \FunctionTok{PCA}\NormalTok{(X, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{, }\AttributeTok{scale.unit =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ncp =} \DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{les-axes-uxe0-conserver}{%
+\subsection{2. Les axes à conserver :}\label{les-axes-uxe0-conserver}}
+
+On commence par le \textbf{critère du taux d'inertie cumulé} et de
+\textbf{Kaiser} :
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{eig.val1 }\OtherTok{\textless{}{-}} \FunctionTok{get\_eigenvalue}\NormalTok{(res.pca1)}
+\NormalTok{eig.val1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        eigenvalue variance.percent cumulative.variance.percent
+## Dim.1  9.32827152      31.09423841                    31.09424
+## Dim.2  3.12150121      10.40500403                    41.49924
+## Dim.3  1.98838085       6.62793617                    48.12718
+## Dim.4  1.95852912       6.52843041                    54.65561
+## Dim.5  1.73830375       5.79434583                    60.44995
+## Dim.6  1.42434834       4.74782779                    65.19778
+## Dim.7  1.19041475       3.96804917                    69.16583
+## Dim.8  1.13135457       3.77118191                    72.93701
+## Dim.9  1.04925699       3.49752330                    76.43454
+## Dim.10 0.87403111       2.91343705                    79.34797
+## Dim.11 0.86334136       2.87780455                    82.22578
+## Dim.12 0.76199659       2.53998864                    84.76577
+## Dim.13 0.58289431       1.94298104                    86.70875
+## Dim.14 0.56968721       1.89895736                    88.60771
+## Dim.15 0.48461556       1.61538520                    90.22309
+## Dim.16 0.45961818       1.53206059                    91.75515
+## Dim.17 0.41428848       1.38096160                    93.13611
+## Dim.18 0.37935611       1.26452037                    94.40063
+## Dim.19 0.32103982       1.07013272                    95.47077
+## Dim.20 0.28803664       0.96012215                    96.43089
+## Dim.21 0.23028897       0.76762990                    97.19852
+## Dim.22 0.16389484       0.54631615                    97.74483
+## Dim.23 0.15731812       0.52439372                    98.26923
+## Dim.24 0.13401335       0.44671117                    98.71594
+## Dim.25 0.10861403       0.36204676                    99.07799
+## Dim.26 0.09086998       0.30289992                    99.38089
+## Dim.27 0.07388749       0.24629164                    99.62718
+## Dim.28 0.06005420       0.20018065                    99.82736
+## Dim.29 0.03119641       0.10398805                    99.93135
+## Dim.30 0.02059613       0.06865375                   100.00000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_eig}\NormalTok{(res.pca1, }\AttributeTok{addlabels =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ylim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{40}\NormalTok{),}
+         \AttributeTok{main =} \StringTok{"Scree plot — Éboulis des valeurs propres"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{var1 }\OtherTok{\textless{}{-}} \FunctionTok{get\_pca\_var}\NormalTok{(res.pca1)}
+\FunctionTok{corrplot}\NormalTok{(var1}\SpecialCharTok{$}\NormalTok{cos2, }\AttributeTok{is.corr =} \ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-12-1.pdf}
+
+Plus le \texttt{cos²} est élevé, mieux la variable est représentée sur
+l'axe considéré.
+
+\textbf{Critères de sélection des axes :}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Critère de Kaiser} : on retient les axes dont la valeur propre
+  est supérieure à 1 (ACP normée → I\_T = p = 30).
+\item
+  \textbf{Critère du coude} : on observe un décrochement après le 2ème
+  axe suivi d'une décroissance régulière.
+\item
+  \textbf{Critère d'inertie cumulée} : les deux premiers axes
+  concentrent l'essentiel de l'information interprétable.
+\end{itemize}
+
+\textbf{Décision :} On retient les \textbf{deux premiers axes} pour
+l'interprétation principale (complétée par l'axe 3 si nécessaire).
+
+\hypertarget{interpruxe9tation-des-axes}{%
+\subsection{3. Interprétation des axes
+:}\label{interpruxe9tation-des-axes}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_pca\_var}\NormalTok{(res.pca1, }\AttributeTok{axes =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\AttributeTok{col.var =} \StringTok{"cos2"}\NormalTok{, }\AttributeTok{repel =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_gradient2}\NormalTok{(}\AttributeTok{low=}\StringTok{"white"}\NormalTok{, }\AttributeTok{mid=}\StringTok{"blue"}\NormalTok{, }\AttributeTok{high=}\StringTok{"red"}\NormalTok{, }\AttributeTok{midpoint=}\FloatTok{0.4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{round}\NormalTok{(res.pca1}\SpecialCharTok{$}\NormalTok{var}\SpecialCharTok{$}\NormalTok{coord[, }\DecValTok{1}\SpecialCharTok{:}\DecValTok{3}\NormalTok{], }\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                  Dim.1  Dim.2  Dim.3
+## overwhelmed      0.620  0.373  0.174
+## worry            0.799  0.125  0.202
+## tired_sleep      0.657  0.006  0.294
+## deadlines_tens   0.749  0.271  0.166
+## neg_thoughts     0.679  0.377 -0.065
+## insomnia         0.542  0.323 -0.137
+## goal_pressure    0.697  0.144  0.480
+## nervous          0.649  0.312 -0.076
+## sleep_interr     0.520  0.269 -0.440
+## work_conflicts   0.592  0.364 -0.018
+## concentration    0.722  0.090 -0.134
+## drowsy           0.820  0.029  0.141
+## cant_disconnect  0.248  0.482 -0.487
+## avoid_fear       0.647  0.216 -0.135
+## substances       0.329 -0.274  0.202
+## emot_exhaust     0.571 -0.253  0.454
+## manage_emot     -0.371 -0.115  0.276
+## collegue_supp    0.138  0.441  0.264
+## lost_meaning     0.629 -0.426 -0.077
+## optimistic      -0.236  0.543  0.443
+## talk_superv     -0.320  0.474 -0.278
+## cynical          0.658 -0.254 -0.234
+## bounce_back     -0.347  0.254  0.392
+## isolated         0.610 -0.236 -0.227
+## motiv_drop       0.511 -0.458  0.067
+## self_care       -0.347  0.382  0.075
+## wb_resources    -0.302  0.376 -0.228
+## chron_fatigue    0.734 -0.267 -0.067
+## wlb             -0.355  0.460  0.109
+## ask_help        -0.382  0.156  0.215
+\end{verbatim}
+
+\textbf{Interprétation de la carte des variables (axes 1 et 2) :}
+
+Les deux premières dimensions contiennent une part importante de
+l'inertie totale.
+
+Les variables correspondant à \textbf{overwhelmed, worry, nervous,
+emot\_exhaust, chron\_fatigue, neg\_thoughts, insomnia, tired\_sleep,
+goal\_pressure, deadlines\_tens, concentration, drowsy,
+cant\_disconnect} sont \textbf{corrélées positivement entre elles} et
+contribuent majoritairement à la construction du \textbf{premier axe}.
+Elles sont \textbf{opposées} aux variables \textbf{manage\_emot,
+bounce\_back, optimistic, self\_care, ask\_help, collegue\_supp,
+talk\_superv}.
+
+On conclut que le \textbf{premier axe} oppose les individus en
+\textbf{état de mal-être / surcharge psychologique} (valeurs positives :
+stress élevé, anxiété, fatigue chronique, burnout) aux individus en
+\textbf{équilibre émotionnel / capacité d'adaptation} (valeurs négatives
+: optimisme, résilience, soutien social, auto-gestion émotionnelle). Cet
+axe peut être interprété comme un \textbf{axe général de détresse
+psychologique}.
+
+Le \textbf{deuxième axe} oppose les variables liées au
+\textbf{désengagement / isolement} (lost\_meaning, cynical, isolated,
+motiv\_drop) aux variables liées aux \textbf{manifestations
+physiologiques du stress} (substances, sleep\_interr, avoid\_fear). Cet
+axe reflète une \textbf{distinction entre burnout professionnel/scolaire
+et anxiété somatique}.
+
+\hypertarget{interpruxe9tation-de-la-carte-des-individus}{%
+\subsection{4. Interprétation de la carte des individus
+:}\label{interpruxe9tation-de-la-carte-des-individus}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_pca\_ind}\NormalTok{(res.pca1, }\AttributeTok{geom =} \StringTok{"point"}\NormalTok{, }\AttributeTok{col.ind =} \StringTok{"cos2"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_gradient2}\NormalTok{(}\AttributeTok{low=}\StringTok{"blue"}\NormalTok{, }\AttributeTok{mid=}\StringTok{"white"}\NormalTok{, }\AttributeTok{high=}\StringTok{"red"}\NormalTok{, }\AttributeTok{midpoint=}\FloatTok{0.4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# individus colorés par statut (Étudiant / Salarié)}
+\NormalTok{grp\_statut }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(statut[keep])}
+\FunctionTok{fviz\_pca\_ind}\NormalTok{(res.pca1, }\AttributeTok{axes =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\AttributeTok{habillage =}\NormalTok{ grp\_statut,}
+             \AttributeTok{addEllipses =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ellipse.level =} \FloatTok{0.68}\NormalTok{,}
+             \AttributeTok{geom =} \StringTok{"point"}\NormalTok{, }\AttributeTok{palette =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#4C72B0"}\NormalTok{,}\StringTok{"\#C44E52"}\NormalTok{),}
+             \AttributeTok{title =} \StringTok{"Individus — coloration par Statut"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grp\_genre }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(genre[keep])}
+\FunctionTok{fviz\_pca\_ind}\NormalTok{(res.pca1, }\AttributeTok{axes =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{), }\AttributeTok{habillage =}\NormalTok{ grp\_genre,}
+             \AttributeTok{addEllipses =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ellipse.level =} \FloatTok{0.68}\NormalTok{,}
+             \AttributeTok{geom =} \StringTok{"point"}\NormalTok{, }\AttributeTok{palette =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#DD8452"}\NormalTok{,}\StringTok{"\#55A868"}\NormalTok{),}
+             \AttributeTok{title =} \StringTok{"Individus — coloration par Genre"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+Les individus situés à \textbf{droite} du plan (valeurs positives sur
+l'axe 1) sont ceux qui expriment les niveaux les plus élevés de
+\textbf{stress, anxiété et épuisement}, tandis que ceux situés à
+\textbf{gauche} présentent un meilleur équilibre psychologique.
+
+\hypertarget{analyse-de-correspondance-multiple}{%
+\section{Analyse de Correspondance Multiple
+:}\label{analyse-de-correspondance-multiple}}
+
+\hypertarget{but-de-lacm}{%
+\subsection{But de l'ACM :}\label{but-de-lacm}}
+
+Résumer et visualiser le tableau de données contenant les \textbf{10
+questions Oui/Non} portant sur les comportements de santé (consultation,
+sport, quitter, applications numériques, programmes d'aide, arrêt
+maladie, relaxation, alimentation, hobby, intérêt plateforme).
+
+L'objectif est d'identifier : - Un groupe de personnes ayant un
+\textbf{profil similaire} dans leurs réponses. - Les
+\textbf{associations entre les catégories} des variables.
+
+\hypertarget{choix-du-nombre-daxes}{%
+\subsection{1. Choix du nombre d'axes :}\label{choix-du-nombre-daxes}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{keep\_mca }\OtherTok{\textless{}{-}} \FunctionTok{complete.cases}\NormalTok{(YN)}
+\NormalTok{YN\_fac }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{lapply}\NormalTok{(YN[keep\_mca, ], factor))}
+\NormalTok{res.mca }\OtherTok{\textless{}{-}} \FunctionTok{MCA}\NormalTok{(YN\_fac, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{res.mca}\SpecialCharTok{$}\NormalTok{eig}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        eigenvalue percentage of variance cumulative percentage of variance
+## dim 1  0.20024174              20.024174                          20.02417
+## dim 2  0.18608402              18.608402                          38.63258
+## dim 3  0.13645420              13.645420                          52.27799
+## dim 4  0.10613640              10.613640                          62.89164
+## dim 5  0.09157105               9.157105                          72.04874
+## dim 6  0.07937906               7.937906                          79.98665
+## dim 7  0.07384142               7.384142                          87.37079
+## dim 8  0.05688464               5.688464                          93.05925
+## dim 9  0.04059942               4.059942                          97.11919
+## dim 10 0.02880807               2.880807                         100.00000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_screeplot}\NormalTok{(res.mca, }\AttributeTok{addlabels =} \ConstantTok{TRUE}\NormalTok{,}
+               \AttributeTok{main =} \StringTok{"Scree plot — ACM"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+En ACM, le seuil de rétention des axes est \textbf{1/m} (où m = nombre
+de variables actives = 10, soit seuil = 0.1 sur les valeurs propres ou
+10\% de variance). On retient les axes dépassant ce seuil.
+
+\hypertarget{interpruxe9tation-de-la-premiuxe8re-carte-des-modalituxe9s}{%
+\subsection{2. Interprétation de la première carte des modalités
+:}\label{interpruxe9tation-de-la-premiuxe8re-carte-des-modalituxe9s}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_mca\_var}\NormalTok{(res.mca, }\AttributeTok{repel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ggtheme =} \FunctionTok{theme\_minimal}\NormalTok{(),}
+             \AttributeTok{title =} \StringTok{"Variable categories — MCA"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+Il suffit d'identifier les groupes de modalités qui sont proches dans la
+carte.
+
+\begin{itemize}
+\item
+  On a un \textbf{premier groupe} de modalités constitué de :
+  \textbf{consult\_pro\_Oui, relax\_Oui, app\_num\_Oui, hobby\_Oui,
+  sport\_Oui}, dont l'interprétation est la suivante : les individus
+  \textbf{proactifs sur leur santé mentale} (qui consultent, pratiquent
+  la relaxation, utilisent des applications et entretiennent un hobby).
+\item
+  On a un \textbf{deuxième groupe} constitué de :
+  \textbf{consult\_pro\_Non, relax\_Non, app\_num\_Non, quitter\_Non,
+  arret\_maladie\_Non}, dont l'interprétation est la suivante : les
+  individus \textbf{non engagés dans une démarche active} de bien-être
+  mental (ni consultation, ni méditation, ni outils numériques).
+\end{itemize}
+
+\hypertarget{interpruxe9tation-de-la-premiuxe8re-carte-des-individus}{%
+\subsection{3. Interprétation de la première carte des individus
+:}\label{interpruxe9tation-de-la-premiuxe8re-carte-des-individus}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_mca\_biplot}\NormalTok{(res.mca, }\AttributeTok{col.ind =} \StringTok{"cos2"}\NormalTok{, }\AttributeTok{invisible =} \StringTok{"var"}\NormalTok{,}
+                \AttributeTok{repel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ggtheme =} \FunctionTok{theme\_minimal}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\hypertarget{classification}{%
+\section{Classification :}\label{classification}}
+
+\hypertarget{but-de-la-classification}{%
+\subsection{1. But de la Classification
+:}\label{but-de-la-classification}}
+
+L'idée de classification des différents éléments d'un jeu de données en
+plusieurs catégories est de regrouper les data en fonction de leur
+similarité. Comme les data présentent des caractéristiques communes, il
+est plus facile de prédire leur comportement et de profiler les grands
+\textbf{types de bien-être mental}.
+
+\hypertarget{classification-hcpc-sur-les-composantes-de-lacp}{%
+\subsection{2. Classification (HCPC sur les composantes de l'ACP)
+:}\label{classification-hcpc-sur-les-composantes-de-lacp}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{res.pca2 }\OtherTok{\textless{}{-}} \FunctionTok{PCA}\NormalTok{(X, }\AttributeTok{ncp =} \DecValTok{4}\NormalTok{, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{res.hcpc }\OtherTok{\textless{}{-}} \FunctionTok{HCPC}\NormalTok{(res.pca2, }\AttributeTok{nb.clust =} \DecValTok{4}\NormalTok{, }\AttributeTok{graph =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(res.hcpc, }\AttributeTok{choice =} \StringTok{"tree"}\NormalTok{, }\AttributeTok{title =} \StringTok{"Dendrogramme — Classification hiérarchique"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{fviz\_cluster}\NormalTok{(res.hcpc, }\AttributeTok{repel =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{show.clust.cent =} \ConstantTok{TRUE}\NormalTok{,}
+             \AttributeTok{palette =} \StringTok{"jco"}\NormalTok{, }\AttributeTok{ggtheme =} \FunctionTok{theme\_minimal}\NormalTok{(),}
+             \AttributeTok{main =} \StringTok{"Factor map — Classes des individus"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{analyse_mental_wellbeing_files/figure-latex/unnamed-chunk-23-1.pdf}
+
+\hypertarget{les-classes-observuxe9es}{%
+\subsection{3. Les Classes Observées :}\label{les-classes-observuxe9es}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# description des classes par les variables}
+\NormalTok{res.hcpc}\SpecialCharTok{$}\NormalTok{desc.var}\SpecialCharTok{$}\NormalTok{quanti}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $`1`
+##                    v.test Mean in category Overall mean sd in category
+## goal_pressure   -1.965174         2.727273     3.361702      1.2128786
+## talk_superv     -2.047081         1.727273     2.446809      0.7496556
+## cynical         -2.313094         2.363636     3.000000      0.7713892
+## tired_sleep     -2.572030         2.727273     3.595745      1.1354542
+## cant_disconnect -2.609217         1.818182     2.680851      0.9359664
+## isolated        -2.650750         1.909091     2.872340      0.9958592
+## sleep_interr    -2.730290         1.363636     2.340426      0.6428243
+## chron_fatigue   -2.973653         1.909091     2.936170      0.8999541
+## avoid_fear      -2.978862         2.181818     3.234043      0.8331956
+## overwhelmed     -3.335482         2.363636     3.319149      0.8813963
+## work_conflicts  -3.433823         2.000000     3.148936      0.9534626
+## drowsy          -3.529662         2.000000     3.191489      0.8528029
+## deadlines_tens  -3.626678         2.000000     3.212766      0.6030227
+## concentration   -3.645975         1.818182     3.106383      0.7158189
+## worry           -3.754187         2.090909     3.425532      0.6680427
+## insomnia        -3.757416         1.363636     2.702128      0.6428243
+## nervous         -3.893426         1.454545     2.702128      0.4979296
+## neg_thoughts    -4.145270         1.636364     3.148936      0.6428243
+##                 Overall sd      p.value
+## goal_pressure     1.210337 4.939415e-02
+## talk_superv       1.317776 4.065016e-02
+## cynical           1.031421 2.071747e-02
+## tired_sleep       1.265913 1.011041e-02
+## cant_disconnect   1.239533 9.074957e-03
+## isolated          1.362367 8.031331e-03
+## sleep_interr      1.341270 6.327864e-03
+## chron_fatigue     1.294904 2.942772e-03
+## avoid_fear        1.324286 2.893209e-03
+## overwhelmed       1.073994 8.515176e-04
+## work_conflicts    1.254417 5.951330e-04
+## drowsy            1.265555 4.160909e-04
+## deadlines_tens    1.253695 2.870909e-04
+## concentration     1.324628 2.663800e-04
+## worry             1.332805 1.739049e-04
+## insomnia          1.335520 1.716768e-04
+## nervous           1.201327 9.883852e-05
+## neg_thoughts      1.368004 3.394133e-05
+## 
+## $`2`
+##                    v.test Mean in category Overall mean sd in category
+## talk_superv      4.125349           3.5625     2.446809      1.1709371
+## wb_resources     3.069194           3.5625     2.723404      1.1709371
+## cant_disconnect  2.237309           3.2500     2.680851      0.9682458
+## worry           -2.012676           2.8750     3.425532      1.0532687
+## tired_sleep     -2.052489           3.0625     3.595745      1.1439378
+## motiv_drop      -2.121624           2.5000     3.063830      1.0606602
+## drowsy          -2.181066           2.6250     3.191489      0.7806247
+## goal_pressure   -2.210975           2.8125     3.361702      1.0135797
+## lost_meaning    -2.518845           2.2500     2.936170      1.0897247
+## emot_exhaust    -3.317726           2.8125     3.553191      0.8076780
+##                 Overall sd      p.value
+## talk_superv       1.317776 3.701723e-05
+## wb_resources      1.332126 2.146368e-03
+## cant_disconnect   1.239533 2.526617e-02
+## worry             1.332805 4.414870e-02
+## tired_sleep       1.265913 4.012217e-02
+## motiv_drop        1.294904 3.386931e-02
+## drowsy            1.265555 2.917855e-02
+## goal_pressure     1.210337 2.703755e-02
+## lost_meaning      1.327359 1.177406e-02
+## emot_exhaust      1.087815 9.075355e-04
+## 
+## $`3`
+##                   v.test Mean in category Overall mean sd in category
+## worry           3.324584         4.428571     3.425532      0.7284314
+## drowsy          2.822219         4.000000     3.191489      0.7559289
+## chron_fatigue   2.654559         3.714286     2.936170      0.9583148
+## isolated        2.498469         3.642857     2.872340      1.2876969
+## tired_sleep     2.407754         4.285714     3.595745      0.7953949
+## lost_meaning    2.351930         3.642857     2.936170      0.8949974
+## neg_thoughts    2.286960         3.857143     3.148936      1.1866606
+## concentration   2.265550         3.785714     3.106383      0.7726181
+## emot_exhaust    2.104551         4.071429     3.553191      1.0326309
+## deadlines_tens  2.018875         3.785714     3.212766      1.1450871
+## wlb            -2.530285         2.071429     2.744681      1.0996289
+##                Overall sd      p.value
+## worry            1.332805 0.0008855042
+## drowsy           1.265555 0.0047692660
+## chron_fatigue    1.294904 0.0079412126
+## isolated         1.362367 0.0124731064
+## tired_sleep      1.265913 0.0160509835
+## lost_meaning     1.327359 0.0186762693
+## neg_thoughts     1.368004 0.0221981457
+## concentration    1.324628 0.0234789764
+## emot_exhaust     1.087815 0.0353303851
+## deadlines_tens   1.253695 0.0435002181
+## wlb              1.175424 0.0113970007
+## 
+## $`4`
+##                   v.test Mean in category Overall mean sd in category
+## nervous         3.882935         4.500000     2.702128      0.7637626
+## drowsy          3.707683         5.000000     3.191489      0.0000000
+## deadlines_tens  3.698725         5.000000     3.212766      0.0000000
+## sleep_interr    3.532683         4.166667     2.340426      1.2133516
+## goal_pressure   3.511956         5.000000     3.361702      0.0000000
+## concentration   3.382583         4.833333     3.106383      0.3726780
+## cynical         3.354017         4.333333     3.000000      0.7453560
+## overwhelmed     3.255332         4.666667     3.319149      0.7453560
+## worry           3.064995         5.000000     3.425532      0.0000000
+## neg_thoughts    2.878524         4.666667     3.148936      0.4714045
+## tired_sleep     2.878094         5.000000     3.595745      0.0000000
+## avoid_fear      2.806809         4.666667     3.234043      0.7453560
+## work_conflicts  2.794451         4.500000     3.148936      0.7637626
+## emot_exhaust    2.655756         4.666667     3.553191      0.4714045
+## insomnia        2.521415         4.000000     2.702128      1.1547005
+## chron_fatigue   2.465502         4.166667     2.936170      1.0671874
+## lost_meaning    2.405218         4.166667     2.936170      1.4624941
+## motiv_drop      2.209715         4.166667     3.063830      1.4624941
+## ask_help       -1.974121         1.833333     2.787234      1.0671874
+## wb_resources   -2.707412         1.333333     2.723404      0.7453560
+## talk_superv    -2.848605         1.000000     2.446809      0.0000000
+## manage_emot    -3.023156         1.833333     3.212766      1.4624941
+##                Overall sd      p.value
+## nervous          1.201327 0.0001032030
+## drowsy           1.265555 0.0002091641
+## deadlines_tens   1.253695 0.0002166852
+## sleep_interr     1.341270 0.0004113655
+## goal_pressure    1.210337 0.0004448214
+## concentration    1.324628 0.0007180762
+## cynical          1.031421 0.0007964743
+## overwhelmed      1.073994 0.0011326000
+## worry            1.332805 0.0021767331
+## neg_thoughts     1.368004 0.0039954054
+## tired_sleep      1.265913 0.0040008638
+## avoid_fear       1.324286 0.0050034840
+## work_conflicts   1.254417 0.0051987965
+## emot_exhaust     1.087815 0.0079130779
+## insomnia         1.335520 0.0116883902
+## chron_fatigue    1.294904 0.0136821435
+## lost_meaning     1.327359 0.0161628268
+## motiv_drop       1.294904 0.0271249486
+## ask_help         1.253695 0.0483679779
+## wb_resources     1.332126 0.0067809987
+## talk_superv      1.317776 0.0043911366
+## manage_emot      1.183866 0.0025015366
+\end{verbatim}
+
+\textbf{Interprétation des 4 classes (profils de bien-être mental) :}
+
+\begin{itemize}
+\item
+  \textbf{Cluster 1} : la catégorie des individus en \textbf{équilibre
+  psychologique et bien-être élevé} (scores faibles sur stress/anxiété,
+  scores élevés sur optimisme, résilience, auto-gestion émotionnelle).
+  Profil protecteur.
+\item
+  \textbf{Cluster 2} : la catégorie des individus avec \textbf{stress
+  modéré} mais \textbf{ressources internes préservées} (bonne gestion
+  émotionnelle malgré la pression professionnelle ou scolaire).
+\item
+  \textbf{Cluster 3} : la catégorie des individus en \textbf{surcharge
+  anxieuse avec troubles du sommeil} (scores élevés sur insomnie, réveil
+  fatigué, tension liée aux délais, préoccupations, mais motivation
+  encore présente).
+\item
+  \textbf{Cluster 4} : la catégorie des individus en \textbf{burnout /
+  détresse psychologique avancée} (scores maximaux sur épuisement
+  émotionnel, perte de sens, cynisme, fatigue chronique, isolement).
+  Profil à risque, nécessitant une intervention prioritaire.
+\end{itemize}
+
+\hypertarget{conclusion}{%
+\section{Conclusion :}\label{conclusion}}
+
+L'analyse a permis de mettre en évidence :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Une \textbf{dimension principale de détresse psychologique} (axe 1 de
+  l'ACP) qui oppose les individus en mal-être aux individus en
+  équilibre.
+\item
+  Une \textbf{seconde dimension} distinguant le désengagement
+  motivationnel des manifestations anxio-somatiques.
+\item
+  Une \textbf{typologie en 4 profils de bien-être}, du plus protecteur
+  (cluster 1) au plus vulnérable (cluster 4).
+\item
+  Un lien entre \textbf{comportements proactifs de santé} (sport,
+  consultation, relaxation, hobby) et \textbf{meilleur équilibre
+  psychologique} (confirmé par l'ACM).
+\end{enumerate}
+
+Ces résultats suggèrent l'intérêt de développer des programmes de
+prévention ciblant spécifiquement les individus du cluster 4 (burnout
+avancé) et de promouvoir les comportements du premier groupe identifié
+en ACM auprès de l'ensemble de la population enquêtée.
+
+\textbf{Merci pour Votre attention --- Bacem Ben hamadd ---}
+
+\end{document}

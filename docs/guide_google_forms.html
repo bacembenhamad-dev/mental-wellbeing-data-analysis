@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Google Forms — Enquête Bien-être Mental</title>
+<style>
+:root {
+  --primary: #1B4F72;
+  --secondary: #2E86C1;
+  --accent: #85C1E9;
+  --green: #1B8A5A;
+  --orange: #E67E22;
+  --red: #E74C3C;
+  --light: #EBF5FB;
+  --bg: #F8FAFE;
+  --text: #1C2833;
+  --gray: #6C757D;
+  --border: #DEE2E6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 40px 30px; border-radius: 16px; margin-bottom: 30px; text-align: center; }
+.header h1 { font-size: 1.8em; margin-bottom: 8px; }
+.header p { opacity: 0.9; font-size: 1.05em; }
+
+/* Language tabs */
+.lang-tabs { display: flex; gap: 8px; margin-bottom: 20px; position: sticky; top: 0; z-index: 100; background: var(--bg); padding: 12px 0; border-bottom: 2px solid var(--border); }
+.lang-tab { flex: 1; padding: 12px; border: 2px solid var(--border); border-radius: 10px; background: white; cursor: pointer; font-weight: 600; text-align: center; transition: all 0.2s; font-size: 0.95em; }
+.lang-tab:hover { border-color: var(--secondary); }
+.lang-tab.active { background: var(--secondary); color: white; border-color: var(--secondary); }
+.lang-tab .flag { font-size: 1.3em; display: block; margin-bottom: 2px; }
+
+/* Steps */
+.step { background: white; border-radius: 14px; padding: 24px; margin-bottom: 16px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; cursor: pointer; }
+.step-num { width: 36px; height: 36px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9em; flex-shrink: 0; }
+.step-title { font-size: 1.15em; font-weight: 700; color: var(--primary); }
+.step-badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.75em; font-weight: 600; margin-left: 8px; }
+.badge-setup { background: #E8F5E9; color: #2E7D32; }
+.badge-bloc { background: var(--light); color: var(--secondary); }
+
+/* Question cards */
+.q-card { background: #FAFBFC; border: 1px solid #E8ECF0; border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+.q-card:last-child { margin-bottom: 0; }
+.q-num { font-weight: 700; color: var(--secondary); margin-bottom: 4px; font-size: 0.85em; }
+.q-type { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.72em; font-weight: 600; margin-left: 8px; }
+.type-choice { background: #FFF3E0; color: #E65100; }
+.type-scale { background: #E8F5E9; color: #2E7D32; }
+.type-yesno { background: #FCE4EC; color: #C62828; }
+.type-text { background: #F3E5F5; color: #6A1B9A; }
+.type-section { background: var(--primary); color: white; }
+
+.q-text { margin: 8px 0; }
+.q-text .copy-block { display: flex; align-items: flex-start; gap: 8px; }
+.copy-content { flex: 1; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 0.95em; line-height: 1.5; min-height: 38px; word-break: break-word; }
+.copy-btn { background: var(--secondary); color: white; border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 0.8em; font-weight: 600; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; }
+.copy-btn:hover { background: var(--primary); }
+.copy-btn.copied { background: var(--green); }
+
+.q-options { margin-top: 8px; padding-left: 16px; }
+.q-options li { font-size: 0.9em; color: var(--gray); margin-bottom: 2px; list-style: none; }
+.q-options li::before { content: "○ "; color: var(--secondary); }
+
+/* Section banner */
+.section-banner { padding: 12px 16px; border-radius: 10px; margin: 16px 0; color: white; font-weight: 700; }
+.banner-worker { background: var(--secondary); }
+.banner-student { background: var(--green); }
+.banner-common { background: var(--gray); }
+
+/* Axis tag */
+.axis-tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 0.7em; font-weight: 700; color: white; margin-left: 6px; vertical-align: middle; }
+.axis-a { background: #E74C3C; }
+.axis-b { background: #8E44AD; }
+.axis-c { background: #2980B9; }
+.axis-d { background: #D35400; }
+.axis-e { background: #27AE60; }
+.axis-f { background: #2C3E50; }
+
+/* Info box */
+.info-box { background: #FFF8E1; border-left: 4px solid var(--orange); padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 16px 0; font-size: 0.92em; }
+.info-box strong { color: var(--orange); }
+
+/* Progress */
+.progress-bar { width: 100%; height: 6px; background: #E0E0E0; border-radius: 3px; margin: 20px 0 10px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), var(--green)); border-radius: 3px; transition: width 0.4s; }
+.progress-text { text-align: center; font-size: 0.85em; color: var(--gray); margin-bottom: 20px; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .container { padding: 12px; }
+  .header { padding: 24px 16px; }
+  .header h1 { font-size: 1.3em; }
+  .lang-tab { padding: 8px; font-size: 0.82em; }
+  .step { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="header">
+  <h1>📋 Guide Google Forms</h1>
+  <p>Enquête Bien-être Mental — 3 langues, prêt à copier-coller</p>
+</div>
+
+<div class="lang-tabs">
+  <div class="lang-tab active" onclick="switchLang('fr')"><span class="flag">🇫🇷</span> Français</div>
+  <div class="lang-tab" onclick="switchLang('en')"><span class="flag">🇬🇧</span> English</div>
+  <div class="lang-tab" onclick="switchLang('tn')"><span class="flag">🇹🇳</span> Tounsi</div>
+</div>
+
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+<div class="progress-text" id="progressText">Cliquez sur chaque étape pour la déplier</div>
+
+<div id="content"></div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// DATA — All 3 languages
+// ═══════════════════════════════════════════
+const DATA = {
+  // ─── FORM TITLE & DESCRIPTION ───
+  formTitle: {
+    fr: "Enquête — Bien-être mental et stress au travail",
+    en: "Survey — Mental well-being and workplace stress",
+    tn: "Isti9sé — Se77a nafsiya w stress fil 5edma"
+  },
+  formDesc: {
+    fr: "Ce questionnaire s'inscrit dans le cadre d'un projet de recherche universitaire portant sur le bien-être mental en milieu professionnel et académique. Vos réponses sont entièrement anonymes et confidentielles.\n\nTemps estimé : 10–15 minutes | 4 blocs | Profil étudiant ou travailleur",
+    en: "This questionnaire is part of a university research project on mental well-being in professional and academic settings. Your answers are completely anonymous and confidential.\n\nEstimated time: 10–15 minutes | 4 sections | Student or worker profile",
+    tn: "Hedha el questionnaire mte3 projet de recherche fi el jami3a 3al se77a el nafsiya fil 5edma w fi el 9raya. El ijabet mte3ek anonymes w confidentielles.\n\nWa9t t9ribi : 10–15 d9i9a | 4 a9sem | Taleb walla 5eddem"
+  },
+
+  // ─── BLOC 1 ───
+  bloc1Title: {
+    fr: "Bloc 1 — Informations générales",
+    en: "Section 1 — General Information",
+    tn: "9esm 1 — Ma3loumet 3amma"
+  },
+  bloc1Desc: {
+    fr: "Veuillez répondre aux questions suivantes.",
+    en: "Please answer the following questions.",
+    tn: "Jaweb 3al as2la hedhi."
+  },
+  bloc1: [
+    { q: { fr: "Quel est votre âge ?", en: "What is your age?", tn: "9addech 3omrek?" }, type: "choice",
+      opts: {
+        fr: ["18–24 ans","25–34 ans","35–44 ans","45–54 ans","55 ans et plus"],
+        en: ["18–24 years","25–34 years","35–44 years","45–54 years","55 years and over"],
+        tn: ["18–24 sna","25–34 sna","35–44 sna","45–54 sna","55 sna walla akther"]
+      }},
+    { q: { fr: "Quel est votre sexe ?", en: "What is your gender?", tn: "Chnowa el genre mte3ek?" }, type: "choice",
+      opts: {
+        fr: ["Homme","Femme","Autre / Préfère ne pas répondre"],
+        en: ["Male","Female","Other / Prefer not to say"],
+        tn: ["Rajel","Mra","A5er / Manhabch njaweb"]
+      }},
+    { q: { fr: "Quelle est votre situation familiale ?", en: "What is your marital status?", tn: "Chnowa el 7ala el 3a2iliya mte3ek?" }, type: "choice",
+      opts: {
+        fr: ["Célibataire","En couple","Marié(e)","Divorcé(e) / Séparé(e)","Veuf/Veuve"],
+        en: ["Single","In a relationship","Married","Divorced / Separated","Widowed"],
+        tn: ["A3zeb / 3azba","Fi 3ala9a","Mta3arres / Mta3arrsa","Motalla9 / Motalla9a","Armel / Armla"]
+      }},
+    { q: { fr: "Quel est votre statut actuel ?", en: "What is your current status?", tn: "Chnowa el statut mte3ek taw?" }, type: "choice",
+      opts: {
+        fr: ["Étudiant(e)","Travailleur(se)"],
+        en: ["Student","Worker"],
+        tn: ["Taleb/Talba","5eddem/5eddema"]
+      },
+      note: { fr: "⚠️ Cette question servira de branchement conditionnel (voir étape suivante).", en: "⚠️ This question will be used for conditional branching (see next step).", tn: "⚠️ Hedhi el question bech testa3melha lil branchement conditionnel." }
+    },
+  ],
+  // Worker questions
+  workerTitle: {
+    fr: "Section Travailleur (Questions 5–10)",
+    en: "Worker Section (Questions 5–10)",
+    tn: "9esm el 5eddem (As2la 5–10)"
+  },
+  worker: [
+    { q: { fr: "Quel est votre niveau d'études le plus élevé ?", en: "What is your highest level of education?", tn: "Chnowa a3la niveau drassi 3andek?" }, type: "choice",
+      opts: { fr: ["Sans diplôme","Baccalauréat","Licence (Bac+3)","Master (Bac+5)","Doctorat ou plus"], en: ["No diploma","High school diploma","Bachelor's degree","Master's degree","Doctorate or higher"], tn: ["Bla diplome","Baccaluréa","Licence (Bac+3)","Master (Bac+5)","Doctorat walla akther"] }},
+    { q: { fr: "Quel est votre secteur d'activité ?", en: "What is your industry/sector?", tn: "Chnowa el secteur eli t5eddem fih?" }, type: "choice",
+      opts: { fr: ["Technologies / IT","Santé","Éducation","Finance / Banque","Industrie / BTP","Commerce / Vente","Administration publique","Autre"], en: ["Technology / IT","Healthcare","Education","Finance / Banking","Industry / Construction","Sales / Retail","Public administration","Other"], tn: ["Technologies / IT","Se77a","Ta3lim","Finance / Ban9a","Sina3a / BTP","Tijéra / Vente","Idara 3amma","A5er"] }},
+    { q: { fr: "Quelle est votre ancienneté dans votre poste actuel ?", en: "How long have you been in your current position?", tn: "9addech 3andek w9et fi el poste mte3ek taw?" }, type: "choice",
+      opts: { fr: ["Moins d'1 an","1–3 ans","3–5 ans","5–10 ans","Plus de 10 ans"], en: ["Less than 1 year","1–3 years","3–5 years","5–10 years","More than 10 years"], tn: ["A9all men sna","1–3 snin","3–5 snin","5–10 snin","Akther men 10 snin"] }},
+    { q: { fr: "Quel type de contrat avez-vous ?", en: "What type of contract do you have?", tn: "Chnowa naw3 el contrat mte3ek?" }, type: "choice",
+      opts: { fr: ["CDI","CDD","Freelance / Indépendant","Stage / Alternance","Sans emploi"], en: ["Permanent contract","Fixed-term contract","Freelance / Self-employed","Internship / Apprenticeship","Unemployed"], tn: ["CDI","CDD","Freelance / Mosta9el","Stage / Alternance","Bla 5edma"] }},
+    { q: { fr: "Quelle est la taille de votre entreprise ?", en: "What is the size of your company?", tn: "9addech fil chrika mte3ek men employé?" }, type: "choice",
+      opts: { fr: ["1–10 employés","11–50 employés","51–200 employés","201–1000 employés","Plus de 1000 employés"], en: ["1–10 employees","11–50 employees","51–200 employees","201–1000 employees","More than 1000 employees"], tn: ["1–10 employés","11–50 employés","51–200 employés","201–1000 employés","Akther men 1000 employé"] }},
+    { q: { fr: "Occupez-vous un poste avec des responsabilités de management ?", en: "Do you hold a management position?", tn: "3andek poste de management?" }, type: "choice",
+      opts: { fr: ["Oui","Non"], en: ["Yes","No"], tn: ["Ey","Le"] }},
+  ],
+  // Student questions
+  studentTitle: {
+    fr: "Section Étudiant (Questions 5–11)",
+    en: "Student Section (Questions 5–11)",
+    tn: "9esm ettaleb (As2la 5–11)"
+  },
+  student: [
+    { q: { fr: "Quel est votre niveau d'études actuel ?", en: "What is your current level of education?", tn: "Chnowa el niveau mte3ek taw fil 9raya?" }, type: "choice",
+      opts: { fr: ["Baccalauréat / Préparatoire","Licence (L1, L2, L3)","Master (M1, M2)","Doctorat","Formation professionnelle / Autre"], en: ["High school / Preparatory","Bachelor's (Year 1, 2, 3)","Master's (Year 1, 2)","Doctorate","Vocational training / Other"], tn: ["Baccalauréa / Préparatoire","Licence (L1, L2, L3)","Master (M1, M2)","Doctorat","Formation professionnelle / A5er"] }},
+    { q: { fr: "Quelle est votre filière ou domaine d'études ?", en: "What is your field of study?", tn: "Chnowa el filière walla el domaine mte3ek?" }, type: "choice",
+      opts: { fr: ["Sciences & Technologies","Santé & Médecine","Sciences humaines & sociales","Droit & Sciences politiques","Économie, Gestion & Commerce","Arts, Lettres & Langues","Autre"], en: ["Science & Technology","Health & Medicine","Humanities & Social Sciences","Law & Political Science","Economics, Business & Management","Arts, Literature & Languages","Other"], tn: ["Sciences & Technologies","Se77a & Teb","Sciences humaines & sociales","Droit & Sciences politiques","Economie, Gestion & Commerce","Arts, Lettres & Langues","A5er"] }},
+    { q: { fr: "En quelle année êtes-vous dans votre cursus actuel ?", en: "What year are you in your current program?", tn: "Enti fi anhi sna fil cursus mte3ek?" }, type: "choice",
+      opts: { fr: ["1ère année","2ème année","3ème année","4ème année ou plus"], en: ["1st year","2nd year","3rd year","4th year or more"], tn: ["Sna louèl","Sna thenia","Sna theltha","Sna rab3a walla akther"] }},
+    { q: { fr: "Quel est le type de votre établissement ?", en: "What type of institution do you attend?", tn: "Chnowa naw3 el mo2assasa mte3ek?" }, type: "choice",
+      opts: { fr: ["Université publique","Université / École privée","Grande école / Classe préparatoire","Institut / Centre de formation"], en: ["Public university","Private university / school","Elite school / Preparatory class","Institute / Training center"], tn: ["Université publique (dawla)","Université / École privée (5assa)","Grande école / Classe préparatoire","Institut / Centre de formation"] }},
+    { q: { fr: "Exercez-vous une activité professionnelle en parallèle de vos études ?", en: "Do you work alongside your studies?", tn: "T5eddem 7dha el 9raya?" }, type: "choice",
+      opts: { fr: ["Non, aucune","Oui, un emploi à temps partiel","Oui, un emploi à temps plein","Oui, un stage ou une alternance"], en: ["No, not at all","Yes, a part-time job","Yes, a full-time job","Yes, an internship or apprenticeship"], tn: ["Le, 7atta haja","Ey, 5edma à temps partiel","Ey, 5edma à temps plein","Ey, stage walla alternance"] }},
+    { q: { fr: "Combien d'heures de cours avez-vous en moyenne par semaine ?", en: "How many hours of classes do you have per week on average?", tn: "9addech 3andek sa3et cours fil jom3a en moyenne?" }, type: "choice",
+      opts: { fr: ["Moins de 15 heures","15–25 heures","25–35 heures","Plus de 35 heures"], en: ["Less than 15 hours","15–25 hours","25–35 hours","More than 35 hours"], tn: ["A9all men 15 se3a","15–25 se3a","25–35 se3a","Akther men 35 se3a"] }},
+    { q: { fr: "Quel est votre mode de logement actuel ?", en: "What is your current living arrangement?", tn: "Win teskoun taw?" }, type: "choice",
+      opts: { fr: ["Chez les parents / famille","Résidence universitaire (cité U)","Colocation","Seul(e) en appartement","Autre"], en: ["With parents / family","Student residence (dorm)","Shared housing","Living alone in an apartment","Other"], tn: ["M3a el 3a2ila","Foyer / Cité universitaire","Colocation (m3a s7abek)","Wa7dek fi appartement","A5er"] }},
+  ],
+  commonQ: { q: { fr: "Dans quelle région / pays vous trouvez-vous ?", en: "What region / country are you located in?", tn: "Fi anhi région / bled enti mawjoud?" }, type: "text" },
+
+  // ─── BLOC 2 ───
+  bloc2Title: { fr: "Bloc 2 — Votre vécu professionnel et personnel", en: "Section 2 — Your professional and personal experience", tn: "9esm 2 — El 7ayat el mihaniya w el chakhsiya mte3ek" },
+  bloc2Desc: { fr: "Pour chaque affirmation, indiquez votre degré d'accord sur une échelle de 1 à 5.", en: "For each statement, indicate your level of agreement on a scale from 1 to 5.", tn: "Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5." },
+  bloc2ScaleLabels: { fr: ["1 = Pas du tout d'accord","5 = Tout à fait d'accord"], en: ["1 = Strongly disagree","5 = Strongly agree"], tn: ["1 = Manich mwefe9 5ater","5 = Mwefe9 barcha"] },
+  bloc2: [
+    { q: { fr: "Je me sens souvent débordé(e) par ma charge de travail.", en: "I often feel overwhelmed by my workload.", tn: "Nhoss barcha bil charge mte3 el 5edma eli 3liya." }, axis: "A" },
+    { q: { fr: "Il m'arrive de ressentir une inquiétude excessive sans raison précise.", en: "I sometimes experience excessive worry for no specific reason.", tn: "Iji fi beli 9al9 kbir bla sabab wèdh." }, axis: "B" },
+    { q: { fr: "Je me réveille fatigué(e) même après une nuit complète de sommeil.", en: "I wake up tired even after a full night's sleep.", tn: "Nfi9 ta3ben/ta3bena 7atta ki norghod lila kemla." }, axis: "C" },
+    { q: { fr: "Les délais serrés au travail me provoquent une tension physique.", en: "Tight deadlines at work cause me physical tension.", tn: "El délais eli ydhay9ou fil 5edma ywéjthouni." }, axis: "A" },
+    { q: { fr: "J'ai du mal à contrôler mes pensées négatives ou catastrophiques.", en: "I find it hard to control my negative or catastrophic thoughts.", tn: "Ma ninajjemch ncontroliw les pensées négatives walla el catastrophiques." }, axis: "B" },
+    { q: { fr: "J'ai des difficultés à m'endormir le soir.", en: "I have difficulty falling asleep at night.", tn: "3andi so3ouba bech nor9od fil lil." }, axis: "C" },
+    { q: { fr: "Je ressens une pression constante pour atteindre mes objectifs professionnels.", en: "I feel constant pressure to meet my professional goals.", tn: "N7oss bi pression dayma bech nwosol lel objectifs mte3 el 5edma." }, axis: "A" },
+    { q: { fr: "Je me sens nerveux(se) ou tendu(e) dans des situations quotidiennes.", en: "I feel nervous or tense in everyday situations.", tn: "N7oss rohhi nerveux/nerveuse walla mchaddad/mchaddda fi 7ayeti el yawmiya." }, axis: "B" },
+    { q: { fr: "Mon sommeil est souvent interrompu pendant la nuit.", en: "My sleep is often interrupted during the night.", tn: "Nor9od w nfi9 barcha fil lila." }, axis: "C" },
+    { q: { fr: "Les conflits ou tensions au travail affectent fortement mon humeur.", en: "Conflicts or tensions at work strongly affect my mood.", tn: "El conflits walla el tensions fil 5edma ya2athrou 3al mood mte3i barcha." }, axis: "A" },
+    { q: { fr: "J'éprouve des difficultés à me concentrer à cause de mes préoccupations.", en: "I have trouble concentrating because of my worries.", tn: "Ma ninajjemch nconcentri 5ater mohmoum." }, axis: "B" },
+    { q: { fr: "Je me sens somnolent(e) ou en manque d'énergie pendant la journée.", en: "I feel drowsy or low on energy during the day.", tn: "N7oss rohhi ena3es walla ma3andich ta9a fil nhar." }, axis: "C" },
+    { q: { fr: "Je n'arrive pas à déconnecter du travail pendant mon temps libre.", en: "I cannot disconnect from work during my free time.", tn: "Ma ninajjemch nédéconnecti mel 5edma fi wa9t el ra7a mte3i." }, axis: "A" },
+    { q: { fr: "J'évite certaines situations par peur ou par anxiété.", en: "I avoid certain situations out of fear or anxiety.", tn: "Nt7acha des situations min el 5of walla el 9al9." }, axis: "B" },
+    { q: { fr: "Je consomme des substances (café, médicaments, etc.) pour m'aider à dormir ou rester éveillé(e).", en: "I use substances (coffee, medication, etc.) to help me sleep or stay awake.", tn: "Nesta3mel des substances (9ahwa, dwa, etc.) bech nor9od walla bech nib9a fey9an/fey9a." }, axis: "C" },
+  ],
+
+  // ─── BLOC 3 ───
+  bloc3Title: { fr: "Bloc 3 — Votre équilibre et votre environnement", en: "Section 3 — Your balance and environment", tn: "9esm 3 — El tawézon mte3ek w el bi2a mte3ek" },
+  bloc3Desc: { fr: "Pour chaque affirmation, indiquez votre degré d'accord sur une échelle de 1 à 5.", en: "For each statement, indicate your level of agreement on a scale from 1 to 5.", tn: "Lkol jumla, 9oul 9addech mwefe9 3al échelle men 1 lel 5." },
+  bloc3: [
+    { q: { fr: "Je me sens émotionnellement épuisé(e) à la fin de la journée de travail.", en: "I feel emotionally exhausted at the end of the workday.", tn: "N7oss rohhi épuisé(e) émotionnellement fi e5er nhar el 5edma." }, axis: "D" },
+    { q: { fr: "Je suis capable de gérer efficacement mes émotions face aux difficultés.", en: "I am able to effectively manage my emotions when facing difficulties.", tn: "Ninjam ncontroli les émotions mte3i mlièh 9oddem el machékel." }, axis: "E" },
+    { q: { fr: "Mes collègues sont une source de soutien quand je traverse des moments difficiles.", en: "My colleagues are a source of support when I go through difficult times.", tn: "El collègues mte3i y3awnounni ki nkoun fi wa9t s3ib." }, axis: "F" },
+    { q: { fr: "J'ai l'impression que mon travail n'a plus de sens ou d'intérêt.", en: "I feel that my work has lost its meaning or interest.", tn: "N7oss eli el 5edma mte3i ma b9etch 3andha ma3na." }, axis: "D" },
+    { q: { fr: "Je me sens généralement optimiste quant à mon avenir.", en: "I generally feel optimistic about my future.", tn: "En général n7oss rohhi optimiste 3al mosta9bal mte3i." }, axis: "E" },
+    { q: { fr: "Je peux parler ouvertement de mes problèmes avec mon supérieur hiérarchique.", en: "I can openly talk about my problems with my supervisor.", tn: "Ninjam na7ki 3al problèmes mte3i m3a el chef mte3i bkol sara7a." }, axis: "F" },
+    { q: { fr: "Je me sens détaché(e) ou cynique envers mon travail.", en: "I feel detached or cynical towards my work.", tn: "N7oss rohhi détaché(e) walla cynique envers el 5edma mte3i." }, axis: "D" },
+    { q: { fr: "Après un échec, je réussis à rebondir relativement vite.", en: "After a failure, I manage to bounce back relatively quickly.", tn: "Ba3d ma nfachel, ninjam nraja3 rohhi vite." }, axis: "E" },
+    { q: { fr: "Je me sens isolé(e) dans mon environnement de travail.", en: "I feel isolated in my work environment.", tn: "N7oss rohhi wa7di/wa7diya fil 5edma." }, axis: "F" },
+    { q: { fr: "J'ai de plus en plus de mal à me motiver pour aller travailler.", en: "I find it increasingly difficult to motivate myself to go to work.", tn: "Walla ashal 3liya bech nit7ammes bech nemchi nel 5edma." }, axis: "D" },
+    { q: { fr: "Je prends régulièrement du temps pour des activités qui me font du bien.", en: "I regularly take time for activities that make me feel good.", tn: "Na5ou wa9t 3al activités eli t7assisni mlièh régulièrement." }, axis: "E" },
+    { q: { fr: "Mon entreprise propose des ressources pour le bien-être des employés.", en: "My company offers resources for employee well-being.", tn: "El chrika mte3i toffri des ressources lil bien-être mte3 el employés." }, axis: "F" },
+    { q: { fr: "Je ressens une fatigue chronique qui ne disparaît pas avec le repos.", en: "I experience chronic fatigue that does not go away with rest.", tn: "3andi fatigue chronique ma temchich 7atta ki nerta7." }, axis: "D" },
+    { q: { fr: "Je suis satisfait(e) de l'équilibre entre ma vie professionnelle et personnelle.", en: "I am satisfied with my work-life balance.", tn: "Ena radhhi/radhya 3al équilibre bin el 5edma w el 7aya el chakhsiya." }, axis: "E" },
+    { q: { fr: "Je me sens à l'aise pour demander de l'aide quand j'en ai besoin.", en: "I feel comfortable asking for help when I need it.", tn: "N7oss rohhi à l'aise bech notélob el msa3da ki nkoun m7tajha." }, axis: "F" },
+  ],
+
+  // ─── BLOC 4 ───
+  bloc4Title: { fr: "Bloc 4 — Vos habitudes et expériences", en: "Section 4 — Your habits and experiences", tn: "9esm 4 — El 3adet w el expériences mte3ek" },
+  bloc4Desc: { fr: "Veuillez répondre par Oui ou Non.", en: "Please answer Yes or No.", tn: "Jaweb b Ey walla Le." },
+  bloc4: [
+    { q: { fr: "Avez-vous déjà consulté un professionnel de santé mentale ?", en: "Have you ever consulted a mental health professional?", tn: "Mchit 9bal 3and spécialiste fi se77a el nafsiya?" }},
+    { q: { fr: "Pratiquez-vous une activité physique régulière (au moins 2 fois par semaine) ?", en: "Do you exercise regularly (at least twice a week)?", tn: "Ta3mel sport régulièrement (3al a9all marrtine fil jom3a)?" }},
+    { q: { fr: "Avez-vous déjà envisagé de quitter votre emploi à cause du stress ?", en: "Have you ever considered leaving your job because of stress?", tn: "Fakkart 9bal bech tkamel mel 5edma mte3ek bsabab el stress?" }},
+    { q: { fr: "Utilisez-vous des applications ou outils numériques pour gérer votre bien-être mental ?", en: "Do you use apps or digital tools to manage your mental well-being?", tn: "Testa3mel applications walla outils numériques bech tgéri el bien-être el mental mte3ek?" }},
+    { q: { fr: "Votre entreprise propose-t-elle un programme d'aide aux employés (PAE) ?", en: "Does your company offer an Employee Assistance Program (EAP)?", tn: "El chrika mte3ek toffri programme d'aide lel employés (PAE)?" }},
+    { q: { fr: "Avez-vous pris un arrêt maladie lié au stress au cours des 12 derniers mois ?", en: "Have you taken sick leave due to stress or burnout in the past 12 months?", tn: "5dhit congé maladie bsabab el stress walla el ta3ab fi e5er 12 chhar?" }},
+    { q: { fr: "Pratiquez-vous régulièrement des techniques de relaxation (méditation, yoga, etc.) ?", en: "Do you regularly practice relaxation techniques (meditation, yoga, etc.)?", tn: "Ta3mel techniques de relaxation régulièrement (méditation, tanaffos, yoga, etc.)?" }},
+    { q: { fr: "Estimez-vous que votre alimentation est équilibrée et saine ?", en: "Do you consider your diet to be balanced and healthy?", tn: "T7oss eli el mekla mte3ek équilibrée w s7i7a?" }},
+    { q: { fr: "Avez-vous un hobby ou une passion en dehors du travail ?", en: "Do you have a hobby or passion outside of work?", tn: "3andek hobby walla 7aja t7obbha barra el 5edma?" }},
+    { q: { fr: "Seriez-vous intéressé(e) par une plateforme de suivi de votre bien-être mental ?", en: "Would you be interested in a platform to track your mental well-being?", tn: "T7ebb testa3mel plateforme bech tsuivi el bien-être el mental mte3ek?" }},
+  ],
+  yesNo: { fr: ["Oui","Non"], en: ["Yes","No"], tn: ["Ey","Le"] },
+};
+
+const AXIS_NAMES = {
+  A: { fr: "Stress professionnel", en: "Workplace stress", tn: "Stress fil 5edma" },
+  B: { fr: "Anxiété généralisée", en: "General anxiety", tn: "9al9 3am" },
+  C: { fr: "Sommeil & fatigue", en: "Sleep & fatigue", tn: "Nor9od & ta3ab" },
+  D: { fr: "Épuisement / Burnout", en: "Burnout", tn: "Burnout / Iste7laék" },
+  E: { fr: "Bien-être émotionnel", en: "Emotional well-being", tn: "Ra7a nafsiya" },
+  F: { fr: "Soutien social", en: "Social support", tn: "Da3m ijtiméãi" },
+};
+const AXIS_COLORS = { A: "axis-a", B: "axis-b", C: "axis-c", D: "axis-d", E: "axis-e", F: "axis-f" };
+
+let currentLang = "fr";
+let openSteps = new Set();
+
+function switchLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.lang-tab')[['fr','en','tn'].indexOf(lang)].classList.add('active');
+  render();
+}
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copié';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function copyBlock(id) {
+  const el = document.getElementById('cb-' + id);
+  const btn = document.getElementById('btn-' + id);
+  if (el && btn) copyText(el.textContent, btn);
+}
+
+function toggleStep(n) {
+  if (openSteps.has(n)) openSteps.delete(n); else openSteps.add(n);
+  render();
+}
+
+function cb(id, text) {
+  return `<div class="copy-block"><div class="copy-content" id="cb-${id}">${text}</div><button class="copy-btn" id="btn-${id}" onclick="copyBlock('${id}')">Copier</button></div>`;
+}
+
+function qCard(id, num, typeLabel, typeClass, questionText, extra = '') {
+  return `<div class="q-card">
+    <div class="q-num">Q${num} <span class="q-type ${typeClass}">${typeLabel}</span></div>
+    <div class="q-text">${cb(id, questionText)}</div>
+    ${extra}
+  </div>`;
+}
+
+function optsList(opts) {
+  return `<div class="q-options">${opts.map(o => `<li>${o}</li>`).join('')}</div>`;
+}
+
+function render() {
+  const L = currentLang;
+  let html = '';
+  let stepN = 0;
+
+  // STEP 1: Create form
+  stepN++;
+  const s1open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">Créer le formulaire <span class="step-badge badge-setup">Setup</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s1open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s1open) {
+    html += `<div class="info-box"><strong>Instructions :</strong> Va sur <a href="https://forms.google.com" target="_blank">forms.google.com</a> → Formulaire vierge. Copie-colle le titre et la description ci-dessous.</div>`;
+    html += qCard('form-title', '', 'Titre du formulaire', 'type-section', DATA.formTitle[L]);
+    html += `<div class="q-card"><div class="q-num">Description</div><div class="q-text">${cb('form-desc', DATA.formDesc[L].replace(/\n/g, '<br>'))}</div></div>`;
+  }
+  html += '</div>';
+
+  // STEP 2: Bloc 1
+  stepN++;
+  const s2open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">${DATA.bloc1Title[L]} <span class="step-badge badge-bloc">Bloc 1</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s2open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s2open) {
+    html += `<div class="info-box"><strong>Type Google Forms :</strong> Ajoute une nouvelle section avec ce titre. Chaque question = "Choix multiples" (une seule réponse).</div>`;
+    html += `<div class="q-card"><div class="q-num">Titre de section</div><div class="q-text">${cb('b1-title', DATA.bloc1Title[L])}</div></div>`;
+    DATA.bloc1.forEach((item, i) => {
+      let extra = optsList(item.opts[L]);
+      if (item.note) extra += `<div class="info-box" style="margin-top:8px">${item.note[L]}</div>`;
+      html += qCard(`b1-q${i}`, i+1, 'Choix multiples', 'type-choice', item.q[L], extra);
+    });
+  }
+  html += '</div>';
+
+  // STEP 3: Conditional branching
+  stepN++;
+  const s3open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">Branchement conditionnel <span class="step-badge badge-setup">Setup</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s3open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s3open) {
+    html += `<div class="info-box"><strong>Comment faire le branchement :</strong><br>
+    1. Sur la Q4 (statut), clique sur les <b>⋮</b> en bas à droite → <b>"Accéder à la section selon la réponse"</b><br>
+    2. Pour "${DATA.bloc1[3].opts[L][0]}" → renvoie vers la <b>section Étudiant</b><br>
+    3. Pour "${DATA.bloc1[3].opts[L][1]}" → renvoie vers la <b>section Travailleur</b><br>
+    4. À la fin de chaque section (Étudiant/Travailleur), redirige vers le <b>Bloc 2</b></div>`;
+  }
+  html += '</div>';
+
+  // STEP 4: Worker section
+  stepN++;
+  const s4open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">${DATA.workerTitle[L]} <span class="step-badge badge-bloc">Travailleur</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s4open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s4open) {
+    html += `<div class="section-banner banner-worker">📋 Nouvelle section dans Google Forms</div>`;
+    html += `<div class="q-card"><div class="q-num">Titre de section</div><div class="q-text">${cb('wk-title', DATA.workerTitle[L])}</div></div>`;
+    DATA.worker.forEach((item, i) => {
+      html += qCard(`wk-q${i}`, i+5, 'Choix multiples', 'type-choice', item.q[L], optsList(item.opts[L]));
+    });
+  }
+  html += '</div>';
+
+  // STEP 5: Student section
+  stepN++;
+  const s5open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">${DATA.studentTitle[L]} <span class="step-badge badge-bloc">Étudiant</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s5open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s5open) {
+    html += `<div class="section-banner banner-student">📋 Nouvelle section dans Google Forms</div>`;
+    html += `<div class="q-card"><div class="q-num">Titre de section</div><div class="q-text">${cb('st-title', DATA.studentTitle[L])}</div></div>`;
+    DATA.student.forEach((item, i) => {
+      html += qCard(`st-q${i}`, i+5, 'Choix multiples', 'type-choice', item.q[L], optsList(item.opts[L]));
+    });
+    html += `<div class="section-banner banner-common">Question commune (tous les profils) — à mettre dans une section séparée</div>`;
+    html += qCard('common-q', 12, 'Réponse courte', 'type-text', DATA.commonQ.q[L]);
+  }
+  html += '</div>';
+
+  // STEP 6: Bloc 2
+  stepN++;
+  const s6open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">${DATA.bloc2Title[L]} <span class="step-badge badge-bloc">Bloc 2 — Échelle 1-5</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s6open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s6open) {
+    html += `<div class="info-box"><strong>Type Google Forms :</strong> "Échelle linéaire" — de 1 à 5.<br>
+    Libellé 1 = <b>${DATA.bloc2ScaleLabels[L][0]}</b> | Libellé 5 = <b>${DATA.bloc2ScaleLabels[L][1]}</b></div>`;
+    html += `<div class="q-card"><div class="q-num">Titre de section</div><div class="q-text">${cb('b2-title', DATA.bloc2Title[L])}</div></div>`;
+    DATA.bloc2.forEach((item, i) => {
+      const axisTag = `<span class="axis-tag ${AXIS_COLORS[item.axis]}">Axe ${item.axis}</span>`;
+      html += qCard(`b2-q${i}`, i+1, 'Échelle linéaire 1→5', 'type-scale', item.q[L], `<div style="font-size:0.8em;color:var(--gray);margin-top:4px">${axisTag} ${AXIS_NAMES[item.axis][L]} <i>(info chercheur, ne pas mettre dans le form)</i></div>`);
+    });
+  }
+  html += '</div>';
+
+  // STEP 7: Bloc 3
+  stepN++;
+  const s7open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">${DATA.bloc3Title[L]} <span class="step-badge badge-bloc">Bloc 3 — Échelle 1-5</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s7open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s7open) {
+    html += `<div class="info-box"><strong>Type Google Forms :</strong> Même config que le Bloc 2 — "Échelle linéaire" 1 à 5.</div>`;
+    html += `<div class="q-card"><div class="q-num">Titre de section</div><div class="q-text">${cb('b3-title', DATA.bloc3Title[L])}</div></div>`;
+    DATA.bloc3.forEach((item, i) => {
+      const axisTag = `<span class="axis-tag ${AXIS_COLORS[item.axis]}">Axe ${item.axis}</span>`;
+      html += qCard(`b3-q${i}`, i+1, 'Échelle linéaire 1→5', 'type-scale', item.q[L], `<div style="font-size:0.8em;color:var(--gray);margin-top:4px">${axisTag} ${AXIS_NAMES[item.axis][L]} <i>(info chercheur, ne pas mettre dans le form)</i></div>`);
+    });
+  }
+  html += '</div>';
+
+  // STEP 8: Bloc 4
+  stepN++;
+  const s8open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">${DATA.bloc4Title[L]} <span class="step-badge badge-bloc">Bloc 4 — Oui/Non</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s8open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s8open) {
+    html += `<div class="info-box"><strong>Type Google Forms :</strong> "Choix multiples" avec 2 options : <b>${DATA.yesNo[L][0]}</b> / <b>${DATA.yesNo[L][1]}</b></div>`;
+    html += `<div class="q-card"><div class="q-num">Titre de section</div><div class="q-text">${cb('b4-title', DATA.bloc4Title[L])}</div></div>`;
+    DATA.bloc4.forEach((item, i) => {
+      html += qCard(`b4-q${i}`, i+1, 'Oui / Non', 'type-yesno', item.q[L], optsList(DATA.yesNo[L]));
+    });
+  }
+  html += '</div>';
+
+  // STEP 9: Final checks
+  stepN++;
+  const s9open = openSteps.has(stepN);
+  html += `<div class="step"><div class="step-header" onclick="toggleStep(${stepN})">
+    <div class="step-num">${stepN}</div>
+    <div class="step-title">Vérifications finales <span class="step-badge badge-setup">Setup</span></div>
+    <span style="margin-left:auto;font-size:1.2em">${s9open ? '▾' : '▸'}</span>
+  </div>`;
+  if (s9open) {
+    html += `<div class="info-box">
+    <strong>Checklist finale :</strong><br><br>
+    ☐ <b>Paramètres → Général</b> : Cocher "Limiter à 1 réponse" (si compte Google requis) OU laisser anonyme<br><br>
+    ☐ <b>Branchement conditionnel</b> : Tester le parcours Étudiant ET Travailleur<br><br>
+    ☐ <b>Toutes les questions obligatoires</b> : Activer le toggle "Obligatoire" sur chaque question<br><br>
+    ☐ <b>Ordre des sections</b> : Bloc 1 → (Travailleur OU Étudiant) → Q commune → Bloc 2 → Bloc 3 → Bloc 4<br><br>
+    ☐ <b>Fin des sections Travailleur/Étudiant</b> : Rediriger vers la section "Question commune" puis Bloc 2<br><br>
+    ☐ <b>Aperçu</b> : Cliquer sur 👁️ pour tester le formulaire complet<br><br>
+    ☐ <b>3 formulaires</b> : Créer un Google Form par langue (FR, EN, TN) et partager les 3 liens
+    </div>`;
+  }
+  html += '</div>';
+
+  document.getElementById('content').innerHTML = html;
+
+  // Update progress
+  const pct = Math.round((openSteps.size / stepN) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${openSteps.size} / ${stepN} étapes consultées`;
+}
+
+render();
+</script>
+
+</body>
+</html>
