@@ -55,8 +55,6 @@ Plus un profil sociodémographique détaillé et 10 variables comportementales O
 
 ```
 .
-├── survey/
-│   └── mental_wellbeing_survey.csv       # réponses brutes du formulaire (84 × 177)
 ├── notebooks/
 │   ├── analyse_mental_wellbeing.Rmd      # analyse R Markdown (source)
 │   └── analyse_mental_wellbeing.ipynb    # version Jupyter avec sorties/figures
@@ -90,4 +88,4 @@ Ce travail académique alimente un projet applicatif parallèle, **Mental Well-B
 
 ## Licence
 
-Travail académique réalisé dans le cadre du cours *Analyse des Données* — ESSAI. Les données du questionnaire sont anonymisées.
+Travail académique réalisé dans le cadre du cours *Analyse des Données* — ESSAI. Les réponses brutes du questionnaire ne sont pas publiées.

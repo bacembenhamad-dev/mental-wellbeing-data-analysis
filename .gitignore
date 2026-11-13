@@ -19,3 +19,6 @@ Thumbs.db
 
 # Temp/scratch
 tmp_check.html
+
+# raw survey responses stay private
+survey/
