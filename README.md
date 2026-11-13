@@ -2,7 +2,7 @@
 
 Projet académique du cours **Analyse des Données** (ESSAI — École Supérieure de la Statistique et de l'Analyse de l'Information, Tunis), appliquant l'**ACP**, l'**AFC** et l'**ACM** à une enquête originale sur le bien-être mental en milieu étudiant et professionnel.
 
-**Auteurs :** Bacem Ben Ahmad & Mohamed Amine Mazzez
+**Auteurs :** Bacem Ben Hamad & Mohamed Amine Mazzez
 **Enseignant :** Ghazi Bel Mufti
 
 ---

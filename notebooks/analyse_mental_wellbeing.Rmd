@@ -1,6 +1,6 @@
 ---
 title: "Analyse des Comportements et des Facteurs liés au BIEN-ÊTRE MENTAL"
-author: "Bacem Ben Ahmad"
+author: "Bacem Ben Hamad"
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
